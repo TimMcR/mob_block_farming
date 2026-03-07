@@ -2,6 +2,7 @@ package net.Rampage.mob_block_farming;
 
 import com.mojang.logging.LogUtils;
 import net.Rampage.mob_block_farming.block.ModBlocks;
+import net.Rampage.mob_block_farming.block.custom.MobBlock;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 //import net.Rampage.mob_block_farming.block.entity.renderer.PedestalBlockEntityRenderer;
 import net.Rampage.mob_block_farming.item.ModItems;
@@ -82,6 +83,8 @@ public class MobBlockFarming
 //        event.accept(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
 //        event.accept(ModBlocks.MAGIC_BLOCK);
 //        event.accept(ModBlocks.PEDESTAL);
+
+        event.accept(ModBlocks.PIG_BLOCK);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
