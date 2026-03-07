@@ -17,15 +17,15 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.ALEXANDRITE_BLOCK.get());
-        dropSelf(ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
-        dropSelf(ModBlocks.MAGIC_BLOCK.get());
-        dropSelf(ModBlocks.PEDESTAL.get());
-
-        this.add(ModBlocks.ALEXANDRITE_ORE.get(),
-                block -> createOreDrop(ModBlocks.ALEXANDRITE_ORE.get(), ModItems.RAW_ALEXANDRITE.get()));
-        this.add(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE.get(),
-                block -> createOreDrop(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE.get(), ModItems.RAW_ALEXANDRITE.get()));
+//        dropSelf(ModBlocks.ALEXANDRITE_BLOCK.get());
+//        dropSelf(ModBlocks.RAW_ALEXANDRITE_BLOCK.get());
+//        dropSelf(ModBlocks.MAGIC_BLOCK.get());
+//        dropSelf(ModBlocks.PEDESTAL.get());
+//
+//        this.add(ModBlocks.ALEXANDRITE_ORE.get(),
+//                block -> createOreDrop(ModBlocks.ALEXANDRITE_ORE.get(), ModItems.RAW_ALEXANDRITE.get()));
+//        this.add(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE.get(),
+//                block -> createOreDrop(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE.get(), ModItems.RAW_ALEXANDRITE.get()));
     }
 
     @Override

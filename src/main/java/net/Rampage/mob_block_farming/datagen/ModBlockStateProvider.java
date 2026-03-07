@@ -16,13 +16,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        blockWithItem(ModBlocks.ALEXANDRITE_BLOCK);
-        blockWithItem(ModBlocks.RAW_ALEXANDRITE_BLOCK);
-
-        blockWithItem(ModBlocks.ALEXANDRITE_ORE);
-        blockWithItem(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
-
-        blockWithItem(ModBlocks.MAGIC_BLOCK);
+//        blockWithItem(ModBlocks.ALEXANDRITE_BLOCK);
+//        blockWithItem(ModBlocks.RAW_ALEXANDRITE_BLOCK);
+//
+//        blockWithItem(ModBlocks.ALEXANDRITE_ORE);
+//        blockWithItem(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
+//
+//        blockWithItem(ModBlocks.MAGIC_BLOCK);
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

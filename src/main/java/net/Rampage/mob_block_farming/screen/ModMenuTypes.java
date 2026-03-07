@@ -1,7 +1,6 @@
 package net.Rampage.mob_block_farming.screen;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
-import net.Rampage.mob_block_farming.screen.custom.PedestalMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -13,9 +12,8 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(Registries.MENU, MobBlockFarming.MOD_ID);
 
-    public static final RegistryObject<MenuType<PedestalMenu>> PEDESTAL_MENU =
-            MENUS.register("pedestal_name", () -> IForgeMenuType.create(PedestalMenu::new));
-
+//    public static final RegistryObject<MenuType<PedestalMenu>> PEDESTAL_MENU =
+//            MENUS.register("pedestal_name", () -> IForgeMenuType.create(PedestalMenu::new));
 
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);

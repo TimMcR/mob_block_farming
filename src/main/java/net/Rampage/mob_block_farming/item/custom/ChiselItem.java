@@ -15,32 +15,32 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.Map;
 
-public class ChiselItem extends Item {
-    private static final Map<Block, Block> CHISEL_MAP = Map.of(
-            Blocks.STONE, Blocks.STONE_BRICKS,
-            Blocks.DIRT, ModBlocks.ALEXANDRITE_BLOCK.get()
-    );
-
-    public ChiselItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Level level = pContext.getLevel();
-        Block clickedBlock = level.getBlockState(pContext.getClickedPos()).getBlock();
-
-        if (CHISEL_MAP.containsKey(clickedBlock)) {
-            if (!level.isClientSide()) {
-                level.setBlockAndUpdate(pContext.getClickedPos(), CHISEL_MAP.get(clickedBlock).defaultBlockState());
-
-                pContext.getItemInHand().hurtAndBreak(1, (ServerLevel) level, ((ServerPlayer) pContext.getPlayer()),
-                        item -> pContext.getPlayer().onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
-
-                level.playSound(null, pContext.getClickedPos(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS);
-            }
-        }
-
-        return InteractionResult.SUCCESS;
-    }
-}
+//public class ChiselItem extends Item {
+//    private static final Map<Block, Block> CHISEL_MAP = Map.of(
+//            Blocks.STONE, Blocks.STONE_BRICKS,
+//            Blocks.DIRT, ModBlocks.ALEXANDRITE_BLOCK.get()
+//    );
+//
+//    public ChiselItem(Properties pProperties) {
+//        super(pProperties);
+//    }
+//
+//    @Override
+//    public InteractionResult useOn(UseOnContext pContext) {
+//        Level level = pContext.getLevel();
+//        Block clickedBlock = level.getBlockState(pContext.getClickedPos()).getBlock();
+//
+//        if (CHISEL_MAP.containsKey(clickedBlock)) {
+//            if (!level.isClientSide()) {
+//                level.setBlockAndUpdate(pContext.getClickedPos(), CHISEL_MAP.get(clickedBlock).defaultBlockState());
+//
+//                pContext.getItemInHand().hurtAndBreak(1, (ServerLevel) level, ((ServerPlayer) pContext.getPlayer()),
+//                        item -> pContext.getPlayer().onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
+//
+//                level.playSound(null, pContext.getClickedPos(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS);
+//            }
+//        }
+//
+//        return InteractionResult.SUCCESS;
+//    }
+//}

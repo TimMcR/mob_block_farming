@@ -1,7 +1,6 @@
 package net.Rampage.mob_block_farming.block.custom;
 
 import com.mojang.serialization.MapCodec;
-import net.Rampage.mob_block_farming.block.entity.custom.PedestalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,75 +23,75 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class PedestalBlock extends BaseEntityBlock {
-    public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 13, 14);
-
-    public static final MapCodec<PedestalBlock> CODEC = simpleCodec(PedestalBlock::new);
-
-    public PedestalBlock(Properties pProperties) {
-        super(pProperties);
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
-    }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-         return new PedestalBlockEntity(pPos, pState);
-    }
-
-    @Override
-    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState,
-                            boolean pMovedByPiston) {
-        if(pState.getBlock() != pNewState.getBlock()) {
-            if (pLevel.getBlockEntity(pPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
-                pedestalBlockEntity.drops();
-                pLevel.updateNeighbourForOutputSignal(pPos, this);
-            }
-        }
-
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-    }
-
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
-                                              Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        //TODO - clean this up
-        if(pLevel.getBlockEntity(pPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
-            if(pPlayer.isCrouching() && !pLevel.isClientSide()) {
-                ((ServerPlayer)pPlayer).openMenu(new SimpleMenuProvider(pedestalBlockEntity, Component.literal("Pedestal")), pPos);
-                return ItemInteractionResult.SUCCESS;
-            }
-
-            if (pPlayer.isCrouching() && pLevel.isClientSide()) {
-                return ItemInteractionResult.SUCCESS;
-            }
-
-            if (pedestalBlockEntity.inventory.getStackInSlot(0).isEmpty() && !pStack.isEmpty()) {
-                pedestalBlockEntity.inventory.insertItem(0, pStack.copy(), false);
-                pStack.shrink(1);
-                pLevel.playSound(pPlayer, pPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 2f);
-            }
-            else if(!pedestalBlockEntity.inventory.getStackInSlot(0).isEmpty() && pStack.isEmpty()) {
-                ItemStack stackOnPedestal = pedestalBlockEntity.inventory.extractItem(0, 1, false);
-                pPlayer.setItemInHand(InteractionHand.MAIN_HAND, stackOnPedestal);
-                pedestalBlockEntity.clearContents();
-                pLevel.playSound(pPlayer, pPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 1f);
-            }
-        }
-
-        return ItemInteractionResult.SUCCESS;
-    }
-}
+//public class PedestalBlock extends BaseEntityBlock {
+//    public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 13, 14);
+//
+//    public static final MapCodec<PedestalBlock> CODEC = simpleCodec(PedestalBlock::new);
+//
+//    public PedestalBlock(Properties pProperties) {
+//        super(pProperties);
+//    }
+//
+//    @Override
+//    protected VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+//        return SHAPE;
+//    }
+//
+//    @Override
+//    protected MapCodec<? extends BaseEntityBlock> codec() {
+//        return CODEC;
+//    }
+//
+//    @Override
+//    protected RenderShape getRenderShape(BlockState pState) {
+//        return RenderShape.MODEL;
+//    }
+//
+//    @Override
+//    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+//         return new PedestalBlockEntity(pPos, pState);
+//    }
+//
+//    @Override
+//    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState,
+//                            boolean pMovedByPiston) {
+//        if(pState.getBlock() != pNewState.getBlock()) {
+//            if (pLevel.getBlockEntity(pPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
+//                pedestalBlockEntity.drops();
+//                pLevel.updateNeighbourForOutputSignal(pPos, this);
+//            }
+//        }
+//
+//        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+//    }
+//
+//    @Override
+//    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos,
+//                                              Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+//        //TODO - clean this up
+//        if(pLevel.getBlockEntity(pPos) instanceof PedestalBlockEntity pedestalBlockEntity) {
+//            if(pPlayer.isCrouching() && !pLevel.isClientSide()) {
+//                ((ServerPlayer)pPlayer).openMenu(new SimpleMenuProvider(pedestalBlockEntity, Component.literal("Pedestal")), pPos);
+//                return ItemInteractionResult.SUCCESS;
+//            }
+//
+//            if (pPlayer.isCrouching() && pLevel.isClientSide()) {
+//                return ItemInteractionResult.SUCCESS;
+//            }
+//
+//            if (pedestalBlockEntity.inventory.getStackInSlot(0).isEmpty() && !pStack.isEmpty()) {
+//                pedestalBlockEntity.inventory.insertItem(0, pStack.copy(), false);
+//                pStack.shrink(1);
+//                pLevel.playSound(pPlayer, pPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 2f);
+//            }
+//            else if(!pedestalBlockEntity.inventory.getStackInSlot(0).isEmpty() && pStack.isEmpty()) {
+//                ItemStack stackOnPedestal = pedestalBlockEntity.inventory.extractItem(0, 1, false);
+//                pPlayer.setItemInHand(InteractionHand.MAIN_HAND, stackOnPedestal);
+//                pedestalBlockEntity.clearContents();
+//                pLevel.playSound(pPlayer, pPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1f, 1f);
+//            }
+//        }
+//
+//        return ItemInteractionResult.SUCCESS;
+//    }
+//}

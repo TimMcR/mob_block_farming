@@ -3,10 +3,9 @@ package net.Rampage.mob_block_farming;
 import com.mojang.logging.LogUtils;
 import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
-import net.Rampage.mob_block_farming.block.entity.renderer.PedestalBlockEntityRenderer;
+//import net.Rampage.mob_block_farming.block.entity.renderer.PedestalBlockEntityRenderer;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
-import net.Rampage.mob_block_farming.screen.custom.PedestalScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -71,18 +70,18 @@ public class MobBlockFarming
     }
 
     private void AddIngredientsToTab(BuildCreativeModeTabContentsEvent event) {
-        event.accept(ModItems.ALEXANDRITE);
-        event.accept(ModItems.RAW_ALEXANDRITE);
-        event.accept(ModItems.CHISEL);
+//        event.accept(ModItems.ALEXANDRITE);
+//        event.accept(ModItems.RAW_ALEXANDRITE);
+//        event.accept(ModItems.CHISEL);
     }
 
     private void AddBuildingBlocksToTab(BuildCreativeModeTabContentsEvent event) {
-        event.accept(ModBlocks.ALEXANDRITE_BLOCK);
-        event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK);
-        event.accept(ModBlocks.ALEXANDRITE_ORE);
-        event.accept(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
-        event.accept(ModBlocks.MAGIC_BLOCK);
-        event.accept(ModBlocks.PEDESTAL);
+//        event.accept(ModBlocks.ALEXANDRITE_BLOCK);
+//        event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK);
+//        event.accept(ModBlocks.ALEXANDRITE_ORE);
+//        event.accept(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
+//        event.accept(ModBlocks.MAGIC_BLOCK);
+//        event.accept(ModBlocks.PEDESTAL);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -99,12 +98,12 @@ public class MobBlockFarming
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            MenuScreens.register(ModMenuTypes.PEDESTAL_MENU.get(), PedestalScreen::new);
+//            MenuScreens.register(ModMenuTypes.PEDESTAL_MENU.get(), PedestalScreen::new);
         }
 
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(ModBlockEntities.PEDESTAL_BE.get(), PedestalBlockEntityRenderer::new);
+//            event.registerBlockEntityRenderer(ModBlockEntities.PEDESTAL_BE.get(), PedestalBlockEntityRenderer::new);
         }
     }
 }
