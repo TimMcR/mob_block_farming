@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "mob_block_farming:block/raw_alexandrite_block"
+  }
+}

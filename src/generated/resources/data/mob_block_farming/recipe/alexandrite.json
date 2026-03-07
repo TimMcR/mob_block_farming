@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "mob_block_farming:alexandrite_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "mob_block_farming:alexandrite"
+  }
+}
