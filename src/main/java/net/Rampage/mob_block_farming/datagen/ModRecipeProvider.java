@@ -6,6 +6,7 @@ import net.Rampage.mob_block_farming.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 
@@ -37,6 +38,17 @@ public class ModRecipeProvider extends RecipeProvider {
 //
 //        oreSmelting(pRecipeOutput, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 200, "alexandrite");
 //        oreBlasting(pRecipeOutput, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 100, "alexandrite");
+
+        //TODO - TEMP RECIPE
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PIG_BLOCK.get())
+                .pattern("PWP")
+                .pattern("WDW")
+                .pattern("PWP")
+                .define('P', Items.PORKCHOP)
+                .define('D', Items.DIAMOND)
+                .define('W', Items.PINK_WOOL)
+                .unlockedBy(getHasName(Items.PORKCHOP), has(Items.PORKCHOP))
+                .save(pRecipeOutput);
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "P": {
+      "item": "minecraft:porkchop"
+    },
+    "W": {
+      "item": "minecraft:pink_wool"
+    }
+  },
+  "pattern": [
+    "PWP",
+    "WDW",
+    "PWP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mob_block_farming:pig_block"
+  }
+}
