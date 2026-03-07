@@ -3,6 +3,7 @@
   "textures": {
     "front": "mob_block_farming:block/pig_block_front",
     "side": "mob_block_farming:block/pig_block_side",
-    "top": "mob_block_farming:block/pig_block_top"
+    "top": "mob_block_farming:block/pig_block_top",
+    "bottom": "mob_block_farming:block/pig_block_bottom"
   }
 }
