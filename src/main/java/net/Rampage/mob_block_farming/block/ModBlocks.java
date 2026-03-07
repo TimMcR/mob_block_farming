@@ -40,7 +40,7 @@ public class ModBlocks {
 //    public static final RegistryObject<Block> PEDESTAL = registerBlock("pedestal", () -> new PedestalBlock(BlockBehaviour.Properties.of().noOcclusion()));
 
     public static final RegistryObject<Block> PIG_BLOCK = registerBlock("pig_block", () ->
-            new PigBlock(MobType.PIG, BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL)));
+            new PigBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> result = BLOCKS.register(name, block);

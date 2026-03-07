@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "mob_block_farming:magic_block"
+          "name": "mob_block_farming:pig_block"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mob_block_farming:blocks/magic_block"
+  "random_sequence": "mob_block_farming:blocks/pig_block"
 }

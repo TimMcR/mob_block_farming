@@ -3,7 +3,6 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class PigBlockEntity extends BlockEntity {

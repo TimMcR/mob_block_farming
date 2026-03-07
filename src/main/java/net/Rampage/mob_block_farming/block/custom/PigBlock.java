@@ -19,11 +19,10 @@ import org.jetbrains.annotations.Nullable;
 public class PigBlock extends BaseEntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    private final MobType mobType;
+    private static final MobType mobType = MobType.PIG;
 
-    public PigBlock(MobType mobType, Properties pProperties) {
+    public PigBlock(Properties pProperties) {
         super(pProperties);
-        this.mobType = mobType;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH));
     }
