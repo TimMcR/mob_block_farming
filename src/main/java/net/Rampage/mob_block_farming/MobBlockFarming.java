@@ -2,12 +2,10 @@ package net.Rampage.mob_block_farming;
 
 import com.mojang.logging.LogUtils;
 import net.Rampage.mob_block_farming.block.ModBlocks;
-import net.Rampage.mob_block_farming.block.custom.MobBlock;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 //import net.Rampage.mob_block_farming.block.entity.renderer.PedestalBlockEntityRenderer;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;

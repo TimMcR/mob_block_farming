@@ -2,6 +2,7 @@ package net.Rampage.mob_block_farming.block.entity;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.block.ModBlocks;
+import net.Rampage.mob_block_farming.block.entity.custom.PigBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,6 +17,10 @@ public class ModBlockEntities {
 //    public static final RegistryObject<BlockEntityType<PedestalBlockEntity>> PEDESTAL_BE =
 //            BLOCK_ENTITIES.register("pedestal_be", () -> BlockEntityType.Builder.of(
 //                    PedestalBlockEntity::new, ModBlocks.PEDESTAL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<PigBlockEntity>> PIG_BLOCK_BE =
+        BLOCK_ENTITIES.register("pig_block_be", () -> BlockEntityType.Builder.of(
+                PigBlockEntity::new, ModBlocks.PIG_BLOCK.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

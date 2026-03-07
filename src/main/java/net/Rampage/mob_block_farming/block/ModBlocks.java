@@ -1,7 +1,7 @@
 package net.Rampage.mob_block_farming.block;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
-import net.Rampage.mob_block_farming.block.custom.MobBlock;
+import net.Rampage.mob_block_farming.block.custom.PigBlock;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.util.MobType;
 import net.minecraft.world.item.BlockItem;
@@ -39,7 +39,8 @@ public class ModBlocks {
 //
 //    public static final RegistryObject<Block> PEDESTAL = registerBlock("pedestal", () -> new PedestalBlock(BlockBehaviour.Properties.of().noOcclusion()));
 
-    public static final RegistryObject<Block> PIG_BLOCK = registerBlock("pig_block", () -> new MobBlock(MobType.PIG, BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL)));
+    public static final RegistryObject<Block> PIG_BLOCK = registerBlock("pig_block", () ->
+            new PigBlock(MobType.PIG, BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> result = BLOCKS.register(name, block);
