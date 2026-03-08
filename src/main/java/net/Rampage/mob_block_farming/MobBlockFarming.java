@@ -67,6 +67,11 @@ public class MobBlockFarming
 
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
             AddBuildingBlocksToTab(event);
+
+        if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS)
+        {
+            event.accept(ModBlocks.BLENDER);
+        }
     }
 
     private void AddIngredientsToTab(BuildCreativeModeTabContentsEvent event) {

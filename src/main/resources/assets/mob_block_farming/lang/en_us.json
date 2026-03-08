@@ -1,16 +1,3 @@
 {
-  "item.tutorialmod.alexandrite": "Alexandrite",
-  "item.tutorialmod.raw_alexandrite": "Raw Alexandrite",
-
-  "item.tutorialmod.chisel": "Chisel",
-
-  "block.tutorialmod.alexandrite_block": "Block of Alexandrite",
-  "block.tutorialmod.raw_alexandrite_block": "Block of Raw Alexandrite",
-
-  "block.tutorialmod.alexandrite_ore": "Alexandrite Ore",
-  "block.tutorialmod.alexandrite_deepslate_ore": "Alexandrite Deepslate Ore",
-
-  "block.tutorialmod.magic_block": "Magic Block",
-
-  "block.tutorialmod.pedestal": "Pedestal"
+  "block.mob_block_farming.blender": "Blender"
 }
