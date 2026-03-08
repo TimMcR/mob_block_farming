@@ -70,6 +70,7 @@ public class MobBlockFarming
 
         if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS)
         {
+            event.accept(ModItems.ROTARY_BLADE);
             event.accept(ModBlocks.BLENDER);
         }
     }

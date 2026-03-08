@@ -19,6 +19,9 @@ public class ModItems {
 //
 //    public static final RegistryObject<Item> CHISEL = ITEMS.register("chisel", () -> new ChiselItem(new Item.Properties().durability(32)));
 
+    public static final RegistryObject<Item> ROTARY_BLADE =
+            ITEMS.register("rotary_blade", () -> new Item(new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
