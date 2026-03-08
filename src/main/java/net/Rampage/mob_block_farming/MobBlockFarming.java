@@ -8,6 +8,7 @@ import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.recipe.ModRecipes;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
 import net.Rampage.mob_block_farming.screen.custom.BlenderScreen;
+import net.Rampage.mob_block_farming.sound.ModSounds;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,6 +50,7 @@ public class MobBlockFarming
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);

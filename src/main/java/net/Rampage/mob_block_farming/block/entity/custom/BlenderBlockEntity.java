@@ -1,5 +1,6 @@
 package net.Rampage.mob_block_farming.block.entity.custom;
 
+import net.Rampage.mob_block_farming.block.custom.BlenderBlock;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.recipe.BlenderRecipe;
 import net.Rampage.mob_block_farming.recipe.BlenderRecipeInput;
@@ -27,12 +28,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return slot == 0;
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -129,15 +137,27 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        if(hasRecipe()) {
-            increaseCraftingProgress();
-            setChanged(level, blockPos, blockState);
+        boolean powered = level.hasNeighborSignal(blockPos);
 
-            if (hasCraftingFinished()) {
-                craftItem();
-                resetProgress();
-            }
-        } else {
+        if(powered != blockState.getValue(BlenderBlock.RUNNING)) {
+            level.setBlock(blockPos, blockState.setValue(BlenderBlock.RUNNING, powered), 3);
+        }
+
+        if(!powered) {
+            resetProgress();
+            return;
+        }
+
+        if(!hasRecipe()) {
+            resetProgress();
+            return;
+        }
+
+        increaseCraftingProgress();
+        setChanged(level, blockPos, blockState);
+
+        if (hasCraftingFinished()) {
+            craftItem();
             resetProgress();
         }
     }
