@@ -102,8 +102,8 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         pTag.put("inventory", itemHandler.serializeNBT(pRegistries));
-        pTag.putInt("growth_chamber.progress", progress);
-        pTag.putInt("growth_chamber.max_progress", maxProgress);
+        pTag.putInt("blender.progress", progress);
+        pTag.putInt("blender.max_progress", maxProgress);
 
         super.saveAdditional(pTag, pRegistries);
     }
@@ -113,13 +113,13 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
         super.loadAdditional(pTag, pRegistries);
 
         itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
-        progress = pTag.getInt("growth_chamber.progress");
-        maxProgress = pTag.getInt("growth_chamber.max_progress");
+        progress = pTag.getInt("blender.progress");
+        maxProgress = pTag.getInt("blender.max_progress");
     }
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.tutorialmod.growth_chamber");
+        return Component.translatable("block.tutorialmod.blender");
     }
 
     @Nullable

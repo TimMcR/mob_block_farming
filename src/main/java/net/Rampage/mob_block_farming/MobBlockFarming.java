@@ -5,7 +5,9 @@ import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 //import net.Rampage.mob_block_farming.block.entity.renderer.PedestalBlockEntityRenderer;
 import net.Rampage.mob_block_farming.item.ModItems;
+import net.Rampage.mob_block_farming.recipe.ModRecipes;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
+import net.Rampage.mob_block_farming.screen.custom.BlenderScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,6 +48,7 @@ public class MobBlockFarming
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -97,12 +100,12 @@ public class MobBlockFarming
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-//            MenuScreens.register(ModMenuTypes.PEDESTAL_MENU.get(), PedestalScreen::new);
+            MenuScreens.register(ModMenuTypes.BLENDER_MENU.get(), BlenderScreen::new);
         }
 
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
-//            event.registerBlockEntityRenderer(ModBlockEntities.PEDESTAL_BE.get(), PedestalBlockEntityRenderer::new);
+
         }
     }
 }
