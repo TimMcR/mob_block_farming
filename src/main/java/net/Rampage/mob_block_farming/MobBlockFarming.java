@@ -76,9 +76,8 @@ public class MobBlockFarming
     }
 
     private void AddIngredientsToTab(BuildCreativeModeTabContentsEvent event) {
-//        event.accept(ModItems.ALEXANDRITE);
-//        event.accept(ModItems.RAW_ALEXANDRITE);
-//        event.accept(ModItems.CHISEL);
+        event.accept(ModItems.VEGAN_SLURRY);
+        event.accept(ModItems.MEAT_SLURRY);
     }
 
     private void AddBuildingBlocksToTab(BuildCreativeModeTabContentsEvent event) {

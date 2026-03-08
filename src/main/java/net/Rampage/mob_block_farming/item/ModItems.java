@@ -13,6 +13,10 @@ public class ModItems {
 
     public static final RegistryObject<Item> ROTARY_BLADE =
             ITEMS.register("rotary_blade", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> VEGAN_SLURRY =
+            ITEMS.register("vegan_slurry", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MEAT_SLURRY =
+            ITEMS.register("meat_slurry", () -> new Item(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
