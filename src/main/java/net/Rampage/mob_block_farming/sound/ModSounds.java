@@ -12,12 +12,11 @@ public class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MobBlockFarming.MOD_ID);
 
-    public static final RegistryObject<SoundEvent> BLENDER_LOOP =
-            registerSoundEvent("blender_loop");
+    public static final RegistryObject<SoundEvent> BLENDER_LOOP = registerSoundEvent("blender_loop");
+
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
-        return SOUND_EVENTS.register(name,
-                () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MobBlockFarming.MOD_ID, name)));
+        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MobBlockFarming.MOD_ID, name)));
     }
 
     public static void register(IEventBus eventBus) {
