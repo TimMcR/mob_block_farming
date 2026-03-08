@@ -1,114 +1,204 @@
 package net.Rampage.mob_block_farming.block.entity.custom;
 
-import net.Rampage.mob_block_farming.BlenderRecipeData;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
-import net.Rampage.mob_block_farming.item.ModItems;
-import net.Rampage.mob_block_farming.util.SlurryType;
+import net.Rampage.mob_block_farming.recipe.BlenderRecipe;
+import net.Rampage.mob_block_farming.recipe.BlenderRecipeInput;
+import net.Rampage.mob_block_farming.recipe.ModRecipes;
+import net.Rampage.mob_block_farming.screen.custom.BlenderMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class BlenderBlockEntity extends BlockEntity {
-    protected static final int SLOT_INPUT = 0;
-    protected static final int SLOT_RESULT = 1;
+import java.util.Optional;
 
-    public final ItemStackHandler inventory = new ItemStackHandler(2) {
+public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
+    public final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-
-            if(slot != 0) return false;
-
-            return BlenderRecipeData.get(stack.getItem()) != null;
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            if(!level.isClientSide()) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
         }
     };
 
+    private static final int INPUT_SLOT = 0;
+    private static final int OUTPUT_SLOT = 1;
+
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
+    protected final ContainerData data;
     private int progress = 0;
-    private final int maxProgress = 100;
+    private int maxProgress = 72;
 
     public BlenderBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BLENDER_BE.get(), pPos, pBlockState);
+        data = new ContainerData() {
+            @Override
+            public int get(int i) {
+                return switch (i) {
+                    case 0 -> BlenderBlockEntity.this.progress;
+                    case 1 -> BlenderBlockEntity.this.maxProgress;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int i, int value) {
+                switch (i) {
+                    case 0: BlenderBlockEntity.this.progress = value;
+                    case 1: BlenderBlockEntity.this.maxProgress = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
     }
 
-    public static void tick(Level level, BlockPos blockPos, BlockState state, BlenderBlockEntity be) {
-        if(level.isClientSide) return;
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    }
 
-        if(!level.hasNeighborSignal(blockPos)) {
-            be.progress = 0;
-            return;
-        }
-
-        ItemStack input = be.inventory.getStackInSlot(SLOT_INPUT);
-
-        if(input.isEmpty()) return;
-
-        var recipe = BlenderRecipeData.get(input.getItem());
-
-        if(recipe == null) return;
-
-        ItemStack output = be.inventory.getStackInSlot(SLOT_RESULT);
-
-        Item slurryItem = recipe.type() == SlurryType.VEGAN
-                ? ModItems.VEGAN_SLURRY.get()
-                : ModItems.MEAT_SLURRY.get();
-
-        if(!output.isEmpty() && output.getItem() != slurryItem) return;
-
-        be.progress++;
-
-        if(be.progress < be.maxProgress)
-            return;
-
-        input.shrink(1);
-
-        if(output.isEmpty())
-            be.inventory.setStackInSlot(SLOT_RESULT, new ItemStack(slurryItem, recipe.amount()));
-        else
-            output.grow(recipe.amount());
-
-        be.progress = 0;
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyItemHandler.invalidate();
     }
 
     public void drops() {
-        SimpleContainer inv = new SimpleContainer(inventory.getSlots());
-
-        for(int i = 0; i < inventory.getSlots(); i++) {
-            inv.setItem(i, inventory.getStackInSlot(i));
+        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 
-        Containers.dropContents(this.level, this.worldPosition, inv);
+        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        pTag.put("inventory", itemHandler.serializeNBT(pRegistries));
+        pTag.putInt("growth_chamber.progress", progress);
+        pTag.putInt("growth_chamber.max_progress", maxProgress);
+
         super.saveAdditional(pTag, pRegistries);
-        pTag.put("inventory", inventory.serializeNBT(pRegistries));
     }
 
     @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        inventory.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
+
+        itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
+        progress = pTag.getInt("growth_chamber.progress");
+        maxProgress = pTag.getInt("growth_chamber.max_progress");
     }
 
     @Override
-    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public Component getDisplayName() {
+        return Component.translatable("block.tutorialmod.growth_chamber");
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return new BlenderMenu(pContainerId, pPlayerInventory, this, this.data);
+    }
+
+    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
+        if(hasRecipe()) {
+            increaseCraftingProgress();
+            setChanged(level, blockPos, blockState);
+
+            if (hasCraftingFinished()) {
+                craftItem();
+                resetProgress();
+            }
+        } else {
+            resetProgress();
+        }
+    }
+
+    private void resetProgress() {
+        this.progress = 0;
+        this.maxProgress = 72;
+    }
+
+    private void craftItem() {
+        Optional<RecipeHolder<BlenderRecipe>> recipe = getCurrentRecipe();
+        ItemStack output = recipe.get().value().output();
+
+        itemHandler.extractItem(INPUT_SLOT, 1, false);
+        itemHandler.setStackInSlot(OUTPUT_SLOT, new ItemStack(output.getItem(),
+                itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + output.getCount()));
+    }
+
+    private boolean hasCraftingFinished() {
+        return this.progress >= this.maxProgress;
+    }
+
+    private void increaseCraftingProgress() {
+        progress++;
+    }
+
+    private boolean hasRecipe() {
+        Optional<RecipeHolder<BlenderRecipe>> recipe = getCurrentRecipe();
+        if(recipe.isEmpty()) {
+            return false;
+        }
+
+        ItemStack output = recipe.get().value().output();
+        return canInsertItemIntoOutputSlot(output) && canInsertAmountIntoOutputSlot(output.getCount());
+    }
+
+    private Optional<RecipeHolder<BlenderRecipe>> getCurrentRecipe() {
+        return this.level.getRecipeManager()
+                .getRecipeFor(ModRecipes.BLENDER_TYPE.get(), new BlenderRecipeInput(itemHandler.getStackInSlot(INPUT_SLOT)), level);
+    }
+
+    private boolean canInsertItemIntoOutputSlot(ItemStack output) {
+        return itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
+                this.itemHandler.getStackInSlot(OUTPUT_SLOT).getItem() == output.getItem();
+    }
+
+    private boolean canInsertAmountIntoOutputSlot(int count) {
+        int maxCount = itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty() ? 64 : itemHandler.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
+        int currentCount = itemHandler.getStackInSlot(OUTPUT_SLOT).getCount();
+
+        return maxCount >= currentCount + count;
     }
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

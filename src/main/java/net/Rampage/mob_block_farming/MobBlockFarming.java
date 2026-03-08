@@ -81,12 +81,6 @@ public class MobBlockFarming
     }
 
     private void AddBuildingBlocksToTab(BuildCreativeModeTabContentsEvent event) {
-//        event.accept(ModBlocks.ALEXANDRITE_BLOCK);
-//        event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK);
-//        event.accept(ModBlocks.ALEXANDRITE_ORE);
-//        event.accept(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
-//        event.accept(ModBlocks.MAGIC_BLOCK);
-//        event.accept(ModBlocks.PEDESTAL);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
