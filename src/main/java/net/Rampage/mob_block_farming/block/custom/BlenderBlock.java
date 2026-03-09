@@ -35,6 +35,8 @@ public class BlenderBlock extends BaseEntityBlock {
 
     private int soundTimer = 0;
 
+    private static final int SOUND_TIMER_TICK_DELAY = 20;
+
     public BlenderBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(RUNNING, false));
@@ -107,7 +109,7 @@ public class BlenderBlock extends BaseEntityBlock {
 
         soundTimer++;
 
-        if (soundTimer >= 20) {
+        if (soundTimer >= SOUND_TIMER_TICK_DELAY) {
             soundTimer = 0;
         }
     }
