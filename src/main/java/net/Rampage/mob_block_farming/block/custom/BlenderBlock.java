@@ -68,7 +68,7 @@ public class BlenderBlock extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof BlenderBlockEntity blenderBlockEntity) {
-                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(blenderBlockEntity, Component.literal("Blender")), pPos);
+                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(blenderBlockEntity, Component.translatable("block.mob_block_farming.blender")), pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

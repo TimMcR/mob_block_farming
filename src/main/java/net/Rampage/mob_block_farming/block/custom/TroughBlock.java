@@ -59,7 +59,7 @@ public class TroughBlock extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof TroughBlockEntity troughBlockEntity) {
-                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(troughBlockEntity, Component.literal("Trough")), pPos);
+                ((ServerPlayer) pPlayer).openMenu(new SimpleMenuProvider(troughBlockEntity, Component.translatable("block.mob_block_farming.trough")), pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
