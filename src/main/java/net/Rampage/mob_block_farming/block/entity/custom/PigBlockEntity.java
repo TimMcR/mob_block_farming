@@ -11,7 +11,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,57 +22,32 @@ import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class PigBlockEntity extends BlockEntity {
-    protected final ContainerData data;
-
     private int foodPoints = 0;
-    private int eatTimer = 0;
+    private int maxFoodPoints = 20;
+    private int eatingProgress = 0;
     private static final int TICK_INTERVAL = 60;
 
     public PigBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PIG_BLOCK_BE.get(), pPos, pBlockState);
-
-        data = new ContainerData() {
-            @Override
-            public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> PigBlockEntity.this.foodPoints;
-                    case 1 -> PigBlockEntity.this.eatTimer;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int i, int value) {
-                switch (i) {
-                    case 0: PigBlockEntity.this.foodPoints = value;
-                    case 1: PigBlockEntity.this.eatTimer = value;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        };
     }
 
     public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState) {
         BlockEntity northBlock = getNorthFacingBlock(pLevel, pBlockState);
 
-        if (northBlock instanceof TroughBlockEntity trough) {
+        if (foodPoints < maxFoodPoints && northBlock instanceof TroughBlockEntity trough) {
             LazyOptional<IItemHandler> capability = trough.getCapability(ForgeCapabilities.ITEM_HANDLER);
 
             capability.ifPresent(handler -> {
                 ItemStack stack = handler.getStackInSlot(0);
 
                 if (stack.is(ModItems.VEGAN_SLURRY.get())) {
-                    eatTimer++;
+                    eatingProgress++;
                     setChanged(pLevel, pBlockPos, pBlockState);
 
-                    if (eatTimer == TICK_INTERVAL) {
+                    if (eatingProgress == TICK_INTERVAL) {
                         consumeFood(handler, pLevel, pBlockPos);
                     }
-                    else if (eatTimer % 10 == 0) {
+                    else if (eatingProgress % 10 == 0) {
                         pLevel.playSound(null, pBlockPos, SoundEvents.GENERIC_EAT, SoundSource.BLOCKS);
                     }
                 }
@@ -89,9 +63,12 @@ public class PigBlockEntity extends BlockEntity {
 
     private void consumeFood(IItemHandler handler, Level pLevel, BlockPos pBlockPos) {
         handler.extractItem(0, 1, false);
-        foodPoints += 5;
         pLevel.playSound(null, pBlockPos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS);
         resetEatingProgress();
+
+        foodPoints += 5;
+        if (foodPoints > maxFoodPoints)
+            foodPoints = maxFoodPoints;
     }
 
     private BlockEntity getNorthFacingBlock(Level level, BlockState blockState) {
@@ -103,7 +80,25 @@ public class PigBlockEntity extends BlockEntity {
     }
 
     private void resetEatingProgress() {
-        eatTimer = 0;
+        eatingProgress = 0;
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        pTag.putInt("pig_block.eating_progress", eatingProgress);
+        pTag.putInt("pig_block.food_points", foodPoints);
+        pTag.putInt("pig_block.max_food_points", maxFoodPoints);
+
+        super.saveAdditional(pTag, pRegistries);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
+
+        eatingProgress =  pTag.getInt("pig_block.eating_progress");
+        foodPoints = pTag.getInt("pig_block.food_points");
+        maxFoodPoints = pTag.getInt("pig_block.max_food_points");
     }
 
     @Override
