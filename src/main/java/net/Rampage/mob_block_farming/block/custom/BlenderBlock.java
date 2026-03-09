@@ -3,12 +3,9 @@ package net.Rampage.mob_block_farming.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.block.entity.custom.BlenderBlockEntity;
-import net.Rampage.mob_block_farming.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -30,12 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class BlenderBlock extends BaseEntityBlock {
 
     public static final MapCodec<BlenderBlock> CODEC = simpleCodec(BlenderBlock::new);
-
     public static final BooleanProperty RUNNING = BooleanProperty.create("running");
-
-    private int soundTimer = 0;
-
-    private static final int SOUND_TIMER_TICK_DELAY = 20;
 
     public BlenderBlock(Properties pProperties) {
         super(pProperties);
@@ -93,25 +85,6 @@ public class BlenderBlock extends BaseEntityBlock {
 
         return createTickerHelper(pBlockEntityType, ModBlockEntities.BLENDER_BE.get(),
                 (level, blockPos, blockState, blenderBlockEntity) -> blenderBlockEntity.tick(level, blockPos, blockState));
-    }
-
-    @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (!pState.getValue(RUNNING)) {
-            soundTimer = 0;
-            return;
-        }
-
-        if (soundTimer == 0) {
-            pLevel.playLocalSound(pPos, ModSounds.BLENDER_LOOP.get(), SoundSource.BLOCKS,
-                    0.7F, 1.0F, false);
-        }
-
-        soundTimer++;
-
-        if (soundTimer >= SOUND_TIMER_TICK_DELAY) {
-            soundTimer = 0;
-        }
     }
 
     @Override

@@ -6,6 +6,8 @@ import net.Rampage.mob_block_farming.recipe.BlenderRecipe;
 import net.Rampage.mob_block_farming.recipe.BlenderRecipeInput;
 import net.Rampage.mob_block_farming.recipe.ModRecipes;
 import net.Rampage.mob_block_farming.screen.custom.BlenderMenu;
+import net.Rampage.mob_block_farming.sound.BlenderLoopingSound;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -58,6 +60,8 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 72;
+
+    private BlenderLoopingSound runningSound;
 
     public BlenderBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BLENDER_BE.get(), pPos, pBlockState);
@@ -145,8 +149,11 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
 
         if(!powered) {
             resetProgress();
+            StopRunningSound();
             return;
         }
+
+        PlayRunningSound();
 
         if(!hasRecipe()) {
             resetProgress();
@@ -160,6 +167,20 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
             craftItem();
             resetProgress();
         }
+    }
+
+    private void PlayRunningSound() {
+        if(runningSound != null && !runningSound.isStopped()) return;
+
+        runningSound = new BlenderLoopingSound(this);
+        Minecraft.getInstance().getSoundManager().play(runningSound);
+    }
+
+    private void StopRunningSound() {
+        if(runningSound == null) return;
+
+        Minecraft.getInstance().getSoundManager().stop(runningSound);
+        runningSound = null;
     }
 
     private void resetProgress() {
