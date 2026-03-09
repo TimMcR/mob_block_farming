@@ -2,6 +2,8 @@ package net.Rampage.mob_block_farming.block.entity;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.block.ModBlocks;
+import net.Rampage.mob_block_farming.block.entity.custom.BlenderBlockEntity;
+import net.Rampage.mob_block_farming.block.entity.custom.TroughBlockEntity;
 import net.Rampage.mob_block_farming.block.entity.custom.PigBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,9 +16,13 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MobBlockFarming.MOD_ID);
 
-//    public static final RegistryObject<BlockEntityType<PedestalBlockEntity>> PEDESTAL_BE =
-//            BLOCK_ENTITIES.register("pedestal_be", () -> BlockEntityType.Builder.of(
-//                    PedestalBlockEntity::new, ModBlocks.PEDESTAL.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlenderBlockEntity>> BLENDER_BE =
+            BLOCK_ENTITIES.register("blender_be", () -> BlockEntityType.Builder.of(
+                    BlenderBlockEntity::new, ModBlocks.BLENDER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TroughBlockEntity>> TROUGH_BE =
+            BLOCK_ENTITIES.register("trough_be", () -> BlockEntityType.Builder.of(
+                    TroughBlockEntity::new, ModBlocks.TROUGH.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<PigBlockEntity>> PIG_BLOCK_BE =
         BLOCK_ENTITIES.register("pig_block_be", () -> BlockEntityType.Builder.of(

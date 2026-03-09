@@ -13,8 +13,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-//        basicItem(ModItems.ALEXANDRITE.get());
-//        basicItem(ModItems.RAW_ALEXANDRITE.get());
-//        basicItem(ModItems.CHISEL.get());
+        basicItem(ModItems.ROTARY_BLADE.get());
+        basicItem(ModItems.VEGAN_SLURRY.get());
+        basicItem(ModItems.MEAT_SLURRY.get());
     }
 }

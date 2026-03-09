@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": {
+      "item": "minecraft:iron_trapdoor"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "R": {
+      "item": "mob_block_farming:rotary_blade"
+    }
+  },
+  "pattern": [
+    " T ",
+    "GRG",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "mob_block_farming:blender"
+  }
+}
