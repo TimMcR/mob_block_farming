@@ -1,7 +1,6 @@
 package net.Rampage.mob_block_farming.datagen;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
-import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -29,25 +28,12 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.IRON_SWORD), has(Items.IRON_SWORD))
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(pRecipeOutput);
-
-//        List<ItemLike> ALEXANDRITE_SMELTABLES = List.of(ModItems.RAW_ALEXANDRITE.get(),
-//                ModBlocks.ALEXANDRITE_ORE.get(), ModBlocks.ALEXANDRITE_DEEPSLATE_ORE.get());
-//
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ALEXANDRITE_BLOCK.get())
-//                .pattern("AAA")
-//                .pattern("AAA")
-//                .pattern("AAA")
-//                .define('A', ModItems.ALEXANDRITE.get())
-//                .unlockedBy(getHasName(ModItems.ALEXANDRITE.get()), has(ModItems.ALEXANDRITE.get()))
-//                .save(pRecipeOutput);
 //
 //        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 9)
 //                .requires(ModBlocks.ALEXANDRITE_BLOCK.get())
 //                .unlockedBy(getHasName(ModBlocks.ALEXANDRITE_BLOCK.get()), has(ModBlocks.ALEXANDRITE_BLOCK.get()))
 //                .save(pRecipeOutput);
 //
-//        oreSmelting(pRecipeOutput, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 200, "alexandrite");
-//        oreBlasting(pRecipeOutput, ALEXANDRITE_SMELTABLES, RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 0.25f, 100, "alexandrite");
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,
