@@ -16,7 +16,7 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<BlenderMenu>> BLENDER_MENU =
             MENUS.register("blender_name", () -> IForgeMenuType.create(BlenderMenu::new));
 
-    public static final RegistryObject<MenuType<BlenderMenu>> TROUGH_MENU =
+    public static final RegistryObject<MenuType<TroughMenu>> TROUGH_MENU =
             MENUS.register("trough_name", () -> IForgeMenuType.create(TroughMenu::new));
 
     public static void register(IEventBus eventBus) {

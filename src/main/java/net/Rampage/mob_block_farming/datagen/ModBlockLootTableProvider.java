@@ -1,7 +1,6 @@
 package net.Rampage.mob_block_farming.datagen;
 
 import net.Rampage.mob_block_farming.block.ModBlocks;
-import net.Rampage.mob_block_farming.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -18,6 +17,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(ModBlocks.BLENDER.get());
+        dropSelf(ModBlocks.TROUGH.get());
     }
 
     @Override
