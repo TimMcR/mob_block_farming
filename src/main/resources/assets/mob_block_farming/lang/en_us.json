@@ -3,5 +3,7 @@
   "item.mob_block_farming.vegan_slurry": "Vegan Slurry",
   "item.mob_block_farming.meat_slurry": "Meat Slurry",
 
-  "block.mob_block_farming.blender": "Blender"
+  "block.mob_block_farming.blender": "Blender",
+
+  "sounds.mob_block_farming.blender_loop": "Blender Running"
 }
