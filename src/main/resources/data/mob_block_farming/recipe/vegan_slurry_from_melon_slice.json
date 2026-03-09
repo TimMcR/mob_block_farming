@@ -1,10 +1,10 @@
 {
   "type": "mob_block_farming:blender",
   "ingredient": {
-    "item": "minecraft:pumpkin"
+    "item": "minecraft:melon_slice"
   },
   "result": {
     "id": "mob_block_farming:vegan_slurry",
-    "count": 18
+    "count": 2
   }
 }

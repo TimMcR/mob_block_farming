@@ -1,0 +1,10 @@
+{
+  "type": "mob_block_farming:blender",
+  "ingredient": {
+    "tag": "minecraft:fishes"
+  },
+  "result": {
+    "id": "mob_block_farming:meat_slurry",
+    "count": 2
+  }
+}
