@@ -1,10 +1,10 @@
 {
   "type": "mob_block_farming:blender",
   "ingredient": {
-    "tag": "minecraft:fishes"
+    "tag": "minecraft:chicken_food"
   },
   "result": {
-    "id": "mob_block_farming:meat_slurry",
+    "id": "mob_block_farming:vegan_slurry",
     "count": 1
   }
 }
