@@ -33,6 +33,8 @@ public class BlenderBlock extends BaseEntityBlock {
 
     public static final BooleanProperty RUNNING = BooleanProperty.create("running");
 
+    private int soundTimer = 0;
+
     public BlenderBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(RUNNING, false));
@@ -93,10 +95,21 @@ public class BlenderBlock extends BaseEntityBlock {
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(!pState.getValue(RUNNING) || pRandom.nextInt(20) != 0)
+        if (!pState.getValue(RUNNING)) {
+            soundTimer = 0;
             return;
+        }
 
-        pLevel.playLocalSound(pPos, ModSounds.BLENDER_LOOP.get(), SoundSource.BLOCKS, 0.6f, 1.0f, false);
+        if (soundTimer == 0) {
+            pLevel.playLocalSound(pPos, ModSounds.BLENDER_LOOP.get(), SoundSource.BLOCKS,
+                    0.7F, 1.0F, false);
+        }
+
+        soundTimer++;
+
+        if (soundTimer >= 20) {
+            soundTimer = 0;
+        }
     }
 
     @Override
