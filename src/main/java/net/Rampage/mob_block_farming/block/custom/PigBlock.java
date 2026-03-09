@@ -3,7 +3,6 @@ package net.Rampage.mob_block_farming.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.block.entity.custom.PigBlockEntity;
-import net.Rampage.mob_block_farming.util.MobType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,16 +22,11 @@ import org.jetbrains.annotations.Nullable;
 public class PigBlock extends BaseEntityBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    private static final MobType mobType = MobType.PIG;
 
     public PigBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH));
-    }
-
-    public MobType getMobType() {
-        return mobType;
     }
 
     @Override
