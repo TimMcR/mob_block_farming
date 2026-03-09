@@ -5,6 +5,7 @@
 
   "block.mob_block_farming.blender": "Blender",
   "block.mob_block_farming.trough": "Trough",
+  "block.mob_block_farming.pig_block": "Pig Block",
 
   "sounds.mob_block_farming.blender_loop": "Blender Running"
 }

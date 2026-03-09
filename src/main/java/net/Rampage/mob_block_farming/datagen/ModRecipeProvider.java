@@ -1,6 +1,7 @@
 package net.Rampage.mob_block_farming.datagen;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
+import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -28,12 +29,17 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy(getHasName(Items.IRON_SWORD), has(Items.IRON_SWORD))
                 .unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
                 .save(pRecipeOutput);
-//
-//        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ALEXANDRITE.get(), 9)
-//                .requires(ModBlocks.ALEXANDRITE_BLOCK.get())
-//                .unlockedBy(getHasName(ModBlocks.ALEXANDRITE_BLOCK.get()), has(ModBlocks.ALEXANDRITE_BLOCK.get()))
-//                .save(pRecipeOutput);
-//
+
+        //TODO - TEMP RECIPE
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.PIG_BLOCK.get())
+                .pattern("PWP")
+                .pattern("WDW")
+                .pattern("PWP")
+                .define('P', Items.PORKCHOP)
+                .define('D', Items.DIAMOND)
+                .define('W', Items.PINK_WOOL)
+                .unlockedBy(getHasName(Items.PORKCHOP), has(Items.PORKCHOP))
+                .save(pRecipeOutput);
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult,

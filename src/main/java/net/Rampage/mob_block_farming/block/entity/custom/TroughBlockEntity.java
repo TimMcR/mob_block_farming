@@ -53,37 +53,7 @@ public class TroughBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    public final ItemStackHandler automationInventory = new ItemStackHandler(1) {
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.getItem() instanceof SlurryItem;
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            if(!level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-
-        @Override
-        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-            if (stack.getItem() instanceof SlurryItem) {
-                return inventory.insertItem(slot, stack, simulate);
-            }
-
-            return stack;
-        }
-
-        @Override
-        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            return ItemStack.EMPTY;
-        }
-    };
-
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private LazyOptional<IItemHandler> lazyAutomationItemHandler = LazyOptional.empty();
 
     public TroughBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TROUGH_BE.get(), pPos, pBlockState);
@@ -93,7 +63,6 @@ public class TroughBlockEntity extends BlockEntity implements MenuProvider {
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> inventory);
-        lazyAutomationItemHandler = LazyOptional.of(() -> automationInventory);
     }
 
     @Override
@@ -138,7 +107,7 @@ public class TroughBlockEntity extends BlockEntity implements MenuProvider {
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         // Check if the requested capability is an Item Handler
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyAutomationItemHandler.cast();
+            return lazyItemHandler.cast();
         }
         return super.getCapability(cap, side);
     }

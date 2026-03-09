@@ -3,10 +3,10 @@ package net.Rampage.mob_block_farming.block;
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.block.custom.BlenderBlock;
 import net.Rampage.mob_block_farming.block.custom.TroughBlock;
+import net.Rampage.mob_block_farming.block.custom.PigBlock;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,6 +26,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> TROUGH =
             registerBlock("trough", () -> new TroughBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SLAB)));
+
+    public static final RegistryObject<Block> PIG_BLOCK = registerBlock("pig_block", () ->
+            new PigBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> result = BLOCKS.register(name, block);
