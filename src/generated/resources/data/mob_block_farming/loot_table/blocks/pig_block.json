@@ -11,19 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-<<<<<<<< HEAD:src/generated/resources/data/mob_block_farming/loot_table/blocks/pig_block.json
           "name": "mob_block_farming:pig_block"
-========
-          "name": "mob_block_farming:blender"
->>>>>>>> master:src/generated/resources/data/mob_block_farming/loot_table/blocks/blender.json
         }
       ],
       "rolls": 1.0
     }
   ],
-<<<<<<<< HEAD:src/generated/resources/data/mob_block_farming/loot_table/blocks/pig_block.json
   "random_sequence": "mob_block_farming:blocks/pig_block"
-========
-  "random_sequence": "mob_block_farming:blocks/blender"
->>>>>>>> master:src/generated/resources/data/mob_block_farming/loot_table/blocks/blender.json
 }
