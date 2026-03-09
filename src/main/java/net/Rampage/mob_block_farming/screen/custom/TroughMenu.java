@@ -20,18 +20,24 @@ public class TroughMenu extends AbstractContainerMenu {
         this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public TroughMenu(int pContainerId, Inventory inv, BlockEntity entity) {
-        super(ModMenuTypes.BLENDER_MENU.get(), pContainerId);
-        this.blockEntity = ((TroughBlockEntity) entity);
+    public TroughMenu(int pContainerId, Inventory inv, BlockEntity blockEntity) {
+        super(ModMenuTypes.TROUGH_MENU.get(), pContainerId);
+        this.blockEntity = ((TroughBlockEntity) blockEntity);
         this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 0, 54, 34));
-        this.addSlot(new SlotItemHandler(blockEntity.itemHandler, 1, 104, 34));
+        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 80, 35));
     }
 
+    // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
+    // must assign a slot number to each of the slots used by the GUI.
+    // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
+    // Each time we add a Slot to the container, it automatically increases the slotIndex, which means
+    //  0 - 8 = hotbar slots (which will map to the InventoryPlayer slot numbers 0 - 8)
+    //  9 - 35 = player inventory slots (which map to the InventoryPlayer slot numbers 9 - 35)
+    //  36 - 44 = TileInventory slots, which map to our TileEntity slot numbers 0 - 8)
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
@@ -78,7 +84,7 @@ public class TroughMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.BLENDER.get());
+                pPlayer, ModBlocks.TROUGH.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
