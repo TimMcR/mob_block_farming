@@ -1,16 +1,9 @@
 {
-  "item.tutorialmod.alexandrite": "Alexandrite",
-  "item.tutorialmod.raw_alexandrite": "Raw Alexandrite",
+  "item.mob_block_farming.rotary_blade": "Rotary Blade",
+  "item.mob_block_farming.vegan_slurry": "Vegan Slurry",
+  "item.mob_block_farming.meat_slurry": "Meat Slurry",
 
-  "item.tutorialmod.chisel": "Chisel",
+  "block.mob_block_farming.blender": "Blender",
 
-  "block.tutorialmod.alexandrite_block": "Block of Alexandrite",
-  "block.tutorialmod.raw_alexandrite_block": "Block of Raw Alexandrite",
-
-  "block.tutorialmod.alexandrite_ore": "Alexandrite Ore",
-  "block.tutorialmod.alexandrite_deepslate_ore": "Alexandrite Deepslate Ore",
-
-  "block.tutorialmod.magic_block": "Magic Block",
-
-  "block.tutorialmod.pedestal": "Pedestal"
+  "sounds.mob_block_farming.blender_loop": "Blender Running"
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SIS",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "mob_block_farming:rotary_blade"
+  }
+}

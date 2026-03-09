@@ -1,0 +1,14 @@
+{
+  "type": "mob_block_farming:blender",
+  "ingredient": [
+    { "item": "minecraft:beef" },
+    { "item": "minecraft:chicken" },
+    { "item": "minecraft:mutton" },
+    { "item": "minecraft:porkchop" },
+    { "item": "minecraft:rabbit" }
+  ],
+  "result": {
+    "id": "mob_block_farming:meat_slurry",
+    "count": 2
+  }
+}

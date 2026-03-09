@@ -1,0 +1,10 @@
+{
+  "type": "mob_block_farming:blender",
+  "ingredient": {
+    "item": "minecraft:melon"
+  },
+  "result": {
+    "id": "mob_block_farming:vegan_slurry",
+    "count": 18
+  }
+}

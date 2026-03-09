@@ -5,9 +5,13 @@ import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 //import net.Rampage.mob_block_farming.block.entity.renderer.PedestalBlockEntityRenderer;
 import net.Rampage.mob_block_farming.item.ModItems;
+import net.Rampage.mob_block_farming.recipe.ModRecipes;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
+import net.Rampage.mob_block_farming.screen.custom.BlenderScreen;
+import net.Rampage.mob_block_farming.sound.ModSounds;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,6 +50,8 @@ public class MobBlockFarming
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModRecipes.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -56,7 +62,9 @@ public class MobBlockFarming
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-
+        event.enqueueWork(() -> {
+            ComposterBlock.COMPOSTABLES.put(ModItems.VEGAN_SLURRY.get(), 0.5f);
+        });
     }
 
     // Add the example block item to the building blocks tab
@@ -67,21 +75,20 @@ public class MobBlockFarming
 
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
             AddBuildingBlocksToTab(event);
+
+        if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS)
+        {
+            event.accept(ModItems.ROTARY_BLADE);
+            event.accept(ModBlocks.BLENDER);
+        }
     }
 
     private void AddIngredientsToTab(BuildCreativeModeTabContentsEvent event) {
-//        event.accept(ModItems.ALEXANDRITE);
-//        event.accept(ModItems.RAW_ALEXANDRITE);
-//        event.accept(ModItems.CHISEL);
+        event.accept(ModItems.VEGAN_SLURRY);
+        event.accept(ModItems.MEAT_SLURRY);
     }
 
     private void AddBuildingBlocksToTab(BuildCreativeModeTabContentsEvent event) {
-//        event.accept(ModBlocks.ALEXANDRITE_BLOCK);
-//        event.accept(ModBlocks.RAW_ALEXANDRITE_BLOCK);
-//        event.accept(ModBlocks.ALEXANDRITE_ORE);
-//        event.accept(ModBlocks.ALEXANDRITE_DEEPSLATE_ORE);
-//        event.accept(ModBlocks.MAGIC_BLOCK);
-//        event.accept(ModBlocks.PEDESTAL);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -98,12 +105,12 @@ public class MobBlockFarming
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-//            MenuScreens.register(ModMenuTypes.PEDESTAL_MENU.get(), PedestalScreen::new);
+            MenuScreens.register(ModMenuTypes.BLENDER_MENU.get(), BlenderScreen::new);
         }
 
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
-//            event.registerBlockEntityRenderer(ModBlockEntities.PEDESTAL_BE.get(), PedestalBlockEntityRenderer::new);
+
         }
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mob_block_farming:item/vegan_slurry"
+  }
+}
