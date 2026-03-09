@@ -27,8 +27,7 @@ public class PigBlockEntity extends BlockEntity {
 
     private int foodPoints = 0;
     private int eatTimer = 0;
-
-    private static final int TICK_INTERVAL = 20;
+    private static final int TICK_INTERVAL = 60;
 
     public PigBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PIG_BLOCK_BE.get(), pPos, pBlockState);
@@ -58,12 +57,8 @@ public class PigBlockEntity extends BlockEntity {
         };
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
-        Direction frontDirection = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-
-        BlockPos frontPos = this.worldPosition.relative(frontDirection);
-
-        BlockEntity northBlock = level.getBlockEntity(frontPos);
+    public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState) {
+        BlockEntity northBlock = getNorthFacingBlock(pLevel, pBlockState);
 
         if (northBlock instanceof TroughBlockEntity trough) {
             LazyOptional<IItemHandler> capability = trough.getCapability(ForgeCapabilities.ITEM_HANDLER);
@@ -73,13 +68,13 @@ public class PigBlockEntity extends BlockEntity {
 
                 if (stack.is(ModItems.VEGAN_SLURRY.get())) {
                     eatTimer++;
-                    setChanged(level, blockPos, blockState);
+                    setChanged(pLevel, pBlockPos, pBlockState);
 
                     if (eatTimer == TICK_INTERVAL) {
-                        handler.extractItem(0, 1, false);
-                        foodPoints += 5;
-                        level.playSound(null, blockPos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS);
-                        resetEatingProgress();
+                        consumeFood(handler, pLevel, pBlockPos);
+                    }
+                    else if (eatTimer % 10 == 0) {
+                        pLevel.playSound(null, pBlockPos, SoundEvents.GENERIC_EAT, SoundSource.BLOCKS);
                     }
                 }
                 else {
@@ -90,6 +85,21 @@ public class PigBlockEntity extends BlockEntity {
         else {
             resetEatingProgress();
         }
+    }
+
+    private void consumeFood(IItemHandler handler, Level pLevel, BlockPos pBlockPos) {
+        handler.extractItem(0, 1, false);
+        foodPoints += 5;
+        pLevel.playSound(null, pBlockPos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS);
+        resetEatingProgress();
+    }
+
+    private BlockEntity getNorthFacingBlock(Level level, BlockState blockState) {
+        Direction frontDirection = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        BlockPos frontPos = this.worldPosition.relative(frontDirection);
+
+        return level.getBlockEntity(frontPos);
     }
 
     private void resetEatingProgress() {
