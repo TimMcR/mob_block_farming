@@ -11,6 +11,7 @@ import net.Rampage.mob_block_farming.screen.custom.BlenderScreen;
 import net.Rampage.mob_block_farming.sound.ModSounds;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -61,7 +62,9 @@ public class MobBlockFarming
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-
+        event.enqueueWork(() -> {
+            ComposterBlock.COMPOSTABLES.put(ModItems.VEGAN_SLURRY.get(), 0.5f);
+        });
     }
 
     // Add the example block item to the building blocks tab
