@@ -1,6 +1,7 @@
 package net.Rampage.mob_block_farming.block.entity.custom;
 
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
+import net.Rampage.mob_block_farming.item.custom.SlurryItem;
 import net.Rampage.mob_block_farming.screen.custom.TroughMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -25,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 public class TroughBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler inventory = new ItemStackHandler(1) {
         @Override
-        protected int getStackLimit(int slot, @NotNull ItemStack stack) {
-            return 1;
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return stack.getItem() instanceof SlurryItem;
         }
 
         @Override
@@ -37,14 +38,9 @@ public class TroughBlockEntity extends BlockEntity implements MenuProvider {
             }
         }
     };
-    private float rotation;
 
     public TroughBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.TROUGH_BE.get(), pPos, pBlockState);
-    }
-
-    public void clearContents() {
-        inventory.setStackInSlot(0, ItemStack.EMPTY);
     }
 
     public void drops() {
