@@ -23,12 +23,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class PigBlockEntity extends BlockEntity {
     private int foodPoints = 0;
-    private int maxFoodPoints = 20;
+    private int maxFoodPoints = 60;
     private int eatingProgress = 0;
     private static final int TICK_INTERVAL = 60;
 
     public PigBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PIG_BLOCK_BE.get(), pPos, pBlockState);
+    }
+
+    public int getFoodPoints() {
+        return foodPoints;
     }
 
     public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState) {
