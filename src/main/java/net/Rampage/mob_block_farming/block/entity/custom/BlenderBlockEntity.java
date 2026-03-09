@@ -131,7 +131,7 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.tutorialmod.blender");
+        return Component.translatable("block.mob_block_farming.blender");
     }
 
     @Nullable

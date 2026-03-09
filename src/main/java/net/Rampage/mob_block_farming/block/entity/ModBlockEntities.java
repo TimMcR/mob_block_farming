@@ -3,6 +3,7 @@ package net.Rampage.mob_block_farming.block.entity;
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.block.entity.custom.BlenderBlockEntity;
+import net.Rampage.mob_block_farming.block.entity.custom.TroughBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,6 +18,10 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<BlenderBlockEntity>> BLENDER_BE =
             BLOCK_ENTITIES.register("blender_be", () -> BlockEntityType.Builder.of(
                     BlenderBlockEntity::new, ModBlocks.BLENDER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TroughBlockEntity>> TROUGH_BE =
+            BLOCK_ENTITIES.register("trough_be", () -> BlockEntityType.Builder.of(
+                    TroughBlockEntity::new, ModBlocks.TROUGH.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
