@@ -48,7 +48,6 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
 
     protected final ContainerData data;
 
-
     public MeatHarvesterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.MEAT_HARVESTER_BLOCK_BE.get(), pPos, pBlockState);
 
