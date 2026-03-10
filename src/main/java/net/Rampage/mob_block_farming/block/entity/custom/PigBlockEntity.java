@@ -99,7 +99,8 @@ public class PigBlockEntity extends BlockEntity {
             setChanged();
         }
 
-        harvesters.sort(Comparator.comparingInt(IHarvester::getFoodPointCost));
+        // Sort by highest food point cost
+        harvesters.sort(Comparator.comparingInt(IHarvester::getFoodPointCost).reversed());
 
         for (IHarvester harvester : harvesters) {
             produceHarvesterOutput(harvester);
@@ -135,14 +136,12 @@ public class PigBlockEntity extends BlockEntity {
     // TODO - register feeder blocks the same as harvesters
     public void addHarvester(BlockPos pBlockPos) {
         if(connectedHarvesters.add(pBlockPos)) {
-            level.playSound(null, pBlockPos, SoundEvents.NOTE_BLOCK_COW_BELL.get(), SoundSource.BLOCKS);
             setChanged();
         }
     }
 
     public void removeHarvester(BlockPos pBlockPos) {
         if (connectedHarvesters.remove(pBlockPos)) {
-            level.playSound(null, pBlockPos, SoundEvents.NOTE_BLOCK_BANJO.get(), SoundSource.BLOCKS);
             setChanged();
         }
     }
