@@ -1,0 +1,9 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "front": "mob_block_farming:block/meat_harvester_front",
+    "side": "mob_block_farming:block/meat_harvester_side",
+    "top": "mob_block_farming:block/meat_harvester_top",
+    "bottom": "mob_block_farming:block/meat_harvester_bottom"
+  }
+}

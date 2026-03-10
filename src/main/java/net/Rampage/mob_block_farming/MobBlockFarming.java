@@ -7,6 +7,7 @@ import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.recipe.ModRecipes;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
 import net.Rampage.mob_block_farming.screen.custom.BlenderScreen;
+import net.Rampage.mob_block_farming.screen.custom.MeatHarvesterScreen;
 import net.Rampage.mob_block_farming.screen.custom.TroughScreen;
 import net.Rampage.mob_block_farming.sound.ModSounds;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -91,6 +92,7 @@ public class MobBlockFarming
     private void AddBuildingBlocksToTab(BuildCreativeModeTabContentsEvent event) {
         event.accept(ModBlocks.TROUGH);
         event.accept(ModBlocks.PIG_BLOCK);
+        event.accept(ModBlocks.MEAT_HARVESTER_BLOCK);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -109,6 +111,7 @@ public class MobBlockFarming
         {
             MenuScreens.register(ModMenuTypes.BLENDER_MENU.get(), BlenderScreen::new);
             MenuScreens.register(ModMenuTypes.TROUGH_MENU.get(), TroughScreen::new);
+            MenuScreens.register(ModMenuTypes.MEAT_HARVESTER_MENU.get(), MeatHarvesterScreen::new);
         }
 
         @SubscribeEvent

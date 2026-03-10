@@ -2,6 +2,7 @@ package net.Rampage.mob_block_farming.block;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.block.custom.BlenderBlock;
+import net.Rampage.mob_block_farming.block.custom.MeatHarvesterBlock;
 import net.Rampage.mob_block_farming.block.custom.TroughBlock;
 import net.Rampage.mob_block_farming.block.custom.PigBlock;
 import net.Rampage.mob_block_farming.item.ModItems;
@@ -29,6 +30,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> PIG_BLOCK = registerBlock("pig_block", () ->
             new PigBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_WOOL)));
+
+    public static final RegistryObject<Block> MEAT_HARVESTER_BLOCK = registerBlock("meat_harvester_block", () ->
+            new MeatHarvesterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> result = BLOCKS.register(name, block);
