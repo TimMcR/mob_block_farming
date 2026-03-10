@@ -112,15 +112,15 @@ public class PigBlockEntity extends BlockEntity {
     }
 
     public void addHarvester(BlockPos pBlockPos) {
-        if(connectedHarvesters.contains(pBlockPos)) return;
-
-        connectedHarvesters.add(pBlockPos);
-        setChanged();
+        if(connectedHarvesters.add(pBlockPos)) {
+            setChanged();
+        }
     }
 
     public void removeHarvester(BlockPos pBlockPos) {
-        connectedHarvesters.remove(pBlockPos);
-        setChanged();
+        if (connectedHarvesters.remove(pBlockPos)) {
+            setChanged();
+        }
     }
 
     private BlockEntity getNorthFacingBlock(Level level, BlockState blockState) {
