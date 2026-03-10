@@ -105,7 +105,6 @@ public class TroughBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        // Check if the requested capability is an Item Handler
         if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }

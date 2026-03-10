@@ -3,6 +3,7 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.util.IHarvester;
+import net.Rampage.mob_block_farming.util.MobBlockType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -32,7 +33,7 @@ public class PigBlockEntity extends BlockEntity {
     private int eatingProgress = 0;
     private static final int TICK_INTERVAL = 60;
 
-    private Set<BlockPos> connectedHarvesters = new HashSet<>();
+    private final Set<BlockPos> connectedHarvesters = new HashSet<>();
 
     public PigBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PIG_BLOCK_BE.get(), pPos, pBlockState);
@@ -77,7 +78,7 @@ public class PigBlockEntity extends BlockEntity {
 
         List<IHarvester> harvesters = new ArrayList<>();
 
-        Boolean shouldRemove = false;
+        boolean shouldRemove = false;
 
         while (iterator.hasNext()) {
             BlockPos pos = iterator.next();
@@ -98,7 +99,27 @@ public class PigBlockEntity extends BlockEntity {
             setChanged();
         }
 
-        // Sort connected harvesters
+        harvesters.sort(Comparator.comparingInt(IHarvester::getFoodPointCost));
+
+        for (IHarvester harvester : harvesters) {
+            produceHarvesterOutput(harvester);
+            if(foodPoints == 0)
+                break;
+        }
+    }
+
+    private void produceHarvesterOutput(IHarvester harvester) {
+        int cost = harvester.getFoodPointCost();
+
+        if (foodPoints < cost)
+            return;
+
+        var canAccept = harvester.acceptHarvesterOutput(MobBlockType.PIG);
+        if (!canAccept)
+            return;
+
+        foodPoints -= cost;
+        setChanged();
     }
 
     private void consumeFood(IItemHandler handler, Level pLevel, BlockPos pBlockPos) {
@@ -111,6 +132,7 @@ public class PigBlockEntity extends BlockEntity {
             foodPoints = maxFoodPoints;
     }
 
+    // TODO - register feeder blocks the same as harvesters
     public void addHarvester(BlockPos pBlockPos) {
         if(connectedHarvesters.add(pBlockPos)) {
             level.playSound(null, pBlockPos, SoundEvents.NOTE_BLOCK_COW_BELL.get(), SoundSource.BLOCKS);
@@ -150,6 +172,7 @@ public class PigBlockEntity extends BlockEntity {
             posTag.putInt("x", pos.getX());
             posTag.putInt("y", pos.getY());
             posTag.putInt("z", pos.getZ());
+
             harvesterList.add(posTag);
         }
 
@@ -162,7 +185,7 @@ public class PigBlockEntity extends BlockEntity {
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
 
-        eatingProgress =  pTag.getInt("pig_block.eating_progress");
+        eatingProgress = pTag.getInt("pig_block.eating_progress");
         foodPoints = pTag.getInt("pig_block.food_points");
         maxFoodPoints = pTag.getInt("pig_block.max_food_points");
 

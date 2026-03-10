@@ -3,6 +3,7 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.screen.custom.MeatHarvesterMenu;
 import net.Rampage.mob_block_farming.util.IHarvester;
+import net.Rampage.mob_block_farming.util.MobBlockType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -19,24 +20,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvider, IHarvester {
     public final ItemStackHandler itemHandler = new ItemStackHandler(4) {
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return false;
-        }
-
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -91,6 +87,14 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
         lazyItemHandler.invalidate();
     }
 
+    @Override
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
+            return lazyItemHandler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
     public void drops() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
         for (int i = 0; i < itemHandler.getSlots(); i++) {
@@ -136,6 +140,14 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
     }
 
     @Override
-    public void acceptHarvesterOutput(ItemStack stack) {
+    public boolean acceptHarvesterOutput(MobBlockType mobBlockType) {
+        ItemStack stackToInsert = switch(mobBlockType) {
+            case PIG -> new ItemStack(Items.PORKCHOP, 1);
+        };
+
+        ItemStack remainder = ItemHandlerHelper.insertItemStacked(itemHandler, stackToInsert, false);
+        setChanged();
+
+        return remainder.getCount() != stackToInsert.getCount();
     }
 }

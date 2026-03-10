@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class HarvesterConnector {
 
-    // HERE - block does not have facing property
     public static void tryConnect(Level level, BlockPos pos, BlockState state) {
         if (!state.hasProperty(MeatHarvesterBlock.FACING)) {
             return;

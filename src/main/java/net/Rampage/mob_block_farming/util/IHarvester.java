@@ -1,9 +1,8 @@
 package net.Rampage.mob_block_farming.util;
 
-import net.minecraft.world.item.ItemStack;
 
 public interface IHarvester {
     int getFoodPointCost();
-
-    void acceptHarvesterOutput(ItemStack stack);
+    // Return true if can and has accepted output. Return false if can not and will not produce output (inventory full, etc.)
+    boolean acceptHarvesterOutput(MobBlockType mobBlockType);
 }
