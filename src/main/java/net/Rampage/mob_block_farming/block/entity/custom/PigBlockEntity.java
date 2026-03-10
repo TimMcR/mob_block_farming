@@ -113,12 +113,14 @@ public class PigBlockEntity extends BlockEntity {
 
     public void addHarvester(BlockPos pBlockPos) {
         if(connectedHarvesters.add(pBlockPos)) {
+            level.playSound(null, pBlockPos, SoundEvents.NOTE_BLOCK_COW_BELL.get(), SoundSource.BLOCKS);
             setChanged();
         }
     }
 
     public void removeHarvester(BlockPos pBlockPos) {
         if (connectedHarvesters.remove(pBlockPos)) {
+            level.playSound(null, pBlockPos, SoundEvents.NOTE_BLOCK_BANJO.get(), SoundSource.BLOCKS);
             setChanged();
         }
     }

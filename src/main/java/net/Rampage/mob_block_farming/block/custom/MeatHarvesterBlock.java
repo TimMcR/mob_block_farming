@@ -61,19 +61,28 @@ public class MeatHarvesterBlock extends BaseEntityBlock {
                 meatHarvesterBlockEntity.drops();
                 pLevel.updateNeighbourForOutputSignal(pPos, this);
             }
-        }
 
-        if (!pLevel.isClientSide && pState.getBlock() != pNewState.getBlock()) {
-            MachineConnector.disconnect(pLevel, pPos);
-        }
+            if (!pLevel.isClientSide) {
+                MachineConnector.disconnect(pLevel, pPos, pState);
+            }
 
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+        }
     }
 
     @Override
     protected void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         if(pLevel.isClientSide) return;
 
-        MachineConnector.tryConnect(pLevel, pPos);
+        MachineConnector.tryConnect(pLevel, pPos, pState);
+
+        super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
+    }
+
+    @Override
+    protected void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        if(pLevel.isClientSide) return;
+
+        MachineConnector.tryConnect(pLevel, pPos, pState);
     }
 }
