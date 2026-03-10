@@ -18,6 +18,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     protected void generate() {
         dropSelf(ModBlocks.BLENDER.get());
         dropSelf(ModBlocks.TROUGH.get());
+        dropSelf(ModBlocks.MEAT_HARVESTER_BLOCK.get());
 
         dropSelf(ModBlocks.PIG_BLOCK.get());
     }

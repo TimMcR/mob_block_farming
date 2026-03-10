@@ -2,6 +2,7 @@ package net.Rampage.mob_block_farming.screen;
 
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.screen.custom.BlenderMenu;
+import net.Rampage.mob_block_farming.screen.custom.MeatHarvesterMenu;
 import net.Rampage.mob_block_farming.screen.custom.TroughMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
@@ -18,6 +19,9 @@ public class ModMenuTypes {
 
     public static final RegistryObject<MenuType<TroughMenu>> TROUGH_MENU =
             MENUS.register("trough_name", () -> IForgeMenuType.create(TroughMenu::new));
+
+    public static final RegistryObject<MenuType<MeatHarvesterMenu>> MEAT_HARVESTER_MENU =
+            MENUS.register("meat_harvester_name", () -> IForgeMenuType.create(MeatHarvesterMenu::new));
 
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);
