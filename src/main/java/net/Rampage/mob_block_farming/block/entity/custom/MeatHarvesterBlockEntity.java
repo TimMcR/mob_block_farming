@@ -1,5 +1,6 @@
 package net.Rampage.mob_block_farming.block.entity.custom;
 
+import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.screen.custom.MeatHarvesterMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -17,7 +18,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -49,8 +49,8 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
     protected final ContainerData data;
 
 
-    public MeatHarvesterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+    public MeatHarvesterBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.MEAT_HARVESTER_BLOCK_BE.get(), pPos, pBlockState);
 
         data = new ContainerData() {
             @Override

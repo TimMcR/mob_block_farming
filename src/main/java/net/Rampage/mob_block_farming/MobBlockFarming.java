@@ -92,6 +92,7 @@ public class MobBlockFarming
     private void AddBuildingBlocksToTab(BuildCreativeModeTabContentsEvent event) {
         event.accept(ModBlocks.TROUGH);
         event.accept(ModBlocks.PIG_BLOCK);
+        event.accept(ModBlocks.MEAT_HARVESTER_BLOCK);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

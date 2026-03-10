@@ -7,5 +7,7 @@
   "block.mob_block_farming.trough": "Trough",
   "block.mob_block_farming.pig_block": "Pig Block",
 
+  "block.mob_block_farming.meat_harvester_block": "Meat Harvester",
+
   "sounds.mob_block_farming.blender_loop": "Blender Running"
 }

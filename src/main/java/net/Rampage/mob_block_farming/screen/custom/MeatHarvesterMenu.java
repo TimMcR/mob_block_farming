@@ -5,15 +5,12 @@ import net.Rampage.mob_block_farming.block.entity.custom.BlenderBlockEntity;
 import net.Rampage.mob_block_farming.block.entity.custom.MeatHarvesterBlockEntity;
 import net.Rampage.mob_block_farming.screen.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 
 public class MeatHarvesterMenu extends AbstractContainerMenu {
     public final MeatHarvesterBlockEntity blockEntity;

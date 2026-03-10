@@ -3,6 +3,7 @@ package net.Rampage.mob_block_farming.block.entity;
 import net.Rampage.mob_block_farming.MobBlockFarming;
 import net.Rampage.mob_block_farming.block.ModBlocks;
 import net.Rampage.mob_block_farming.block.entity.custom.BlenderBlockEntity;
+import net.Rampage.mob_block_farming.block.entity.custom.MeatHarvesterBlockEntity;
 import net.Rampage.mob_block_farming.block.entity.custom.TroughBlockEntity;
 import net.Rampage.mob_block_farming.block.entity.custom.PigBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +28,10 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<PigBlockEntity>> PIG_BLOCK_BE =
         BLOCK_ENTITIES.register("pig_block_be", () -> BlockEntityType.Builder.of(
                 PigBlockEntity::new, ModBlocks.PIG_BLOCK.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<MeatHarvesterBlockEntity>> MEAT_HARVESTER_BLOCK_BE =
+        BLOCK_ENTITIES.register("meat_harvester_block_be", () -> BlockEntityType.Builder.of(
+                    MeatHarvesterBlockEntity::new, ModBlocks.MEAT_HARVESTER_BLOCK.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

@@ -1,8 +1,11 @@
 package net.Rampage.mob_block_farming.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.Rampage.mob_block_farming.block.entity.custom.BlenderBlockEntity;
+import net.Rampage.mob_block_farming.block.entity.custom.MeatHarvesterBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -33,6 +36,19 @@ public class MeatHarvesterBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return null;
+        return new MeatHarvesterBlockEntity(pPos, pState);
+    }
+
+    @Override
+    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState,
+                            boolean pMovedByPiston) {
+        if(pState.getBlock() != pNewState.getBlock()) {
+            if (pLevel.getBlockEntity(pPos) instanceof BlenderBlockEntity blenderBlockEntity) {
+                blenderBlockEntity.drops();
+                pLevel.updateNeighbourForOutputSignal(pPos, this);
+            }
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 }
