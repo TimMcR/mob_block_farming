@@ -44,7 +44,7 @@ public class MeatHarvesterBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return this.defaultBlockState()
-                .setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+                .setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override
