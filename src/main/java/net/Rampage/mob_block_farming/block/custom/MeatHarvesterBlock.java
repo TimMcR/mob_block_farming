@@ -2,6 +2,7 @@ package net.Rampage.mob_block_farming.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.Rampage.mob_block_farming.block.entity.custom.MeatHarvesterBlockEntity;
+import net.Rampage.mob_block_farming.util.MachineConnector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -62,6 +63,17 @@ public class MeatHarvesterBlock extends BaseEntityBlock {
             }
         }
 
+        if (!pLevel.isClientSide && pState.getBlock() != pNewState.getBlock()) {
+            MachineConnector.disconnect(pLevel, pPos);
+        }
+
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    }
+
+    @Override
+    protected void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        if(pLevel.isClientSide) return;
+
+        MachineConnector.tryConnect(pLevel, pPos);
     }
 }

@@ -2,7 +2,9 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.screen.custom.MeatHarvesterMenu;
+import net.Rampage.mob_block_farming.util.IHarvester;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -17,15 +19,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvider {
+public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvider, IHarvester {
     public final ItemStackHandler itemHandler = new ItemStackHandler(4) {
 
         @Override
@@ -124,5 +128,14 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public int getFoodPointCost() {
+        return 3;
+    }
+
+    @Override
+    public void acceptHarvesterOutput(ItemStack stack) {
     }
 }

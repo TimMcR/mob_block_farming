@@ -2,10 +2,13 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.item.ModItems;
+import net.Rampage.mob_block_farming.util.IHarvester;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -21,22 +24,26 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.*;
+
 public class PigBlockEntity extends BlockEntity {
     private int foodPoints = 0;
     private int maxFoodPoints = 60;
     private int eatingProgress = 0;
     private static final int TICK_INTERVAL = 60;
 
+    private Set<BlockPos> connectedHarvesters = new HashSet<>();
+
     public PigBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PIG_BLOCK_BE.get(), pPos, pBlockState);
     }
 
-    public int getFoodPoints() {
-        return foodPoints;
-    }
-
     public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState) {
         BlockEntity northBlock = getNorthFacingBlock(pLevel, pBlockState);
+
+        if (foodPoints > 0) {
+            outputToConnectedHarvesters(pLevel);
+        }
 
         if (foodPoints < maxFoodPoints && northBlock instanceof TroughBlockEntity trough) {
             LazyOptional<IItemHandler> capability = trough.getCapability(ForgeCapabilities.ITEM_HANDLER);
@@ -65,6 +72,35 @@ public class PigBlockEntity extends BlockEntity {
         }
     }
 
+    private void outputToConnectedHarvesters(Level pLevel) {
+        Iterator<BlockPos> iterator = connectedHarvesters.iterator();
+
+        List<IHarvester> harvesters = new ArrayList<>();
+
+        Boolean shouldRemove = false;
+
+        while (iterator.hasNext()) {
+            BlockPos pos = iterator.next();
+
+            BlockEntity blockEntity = pLevel.getBlockEntity(pos);
+
+            if(blockEntity instanceof IHarvester harvester)
+            {
+                harvesters.add(harvester);
+            }
+            else {
+                iterator.remove();
+                shouldRemove = true;
+            }
+        }
+
+        if (shouldRemove) {
+            setChanged();
+        }
+
+        // Sort connected harvesters
+    }
+
     private void consumeFood(IItemHandler handler, Level pLevel, BlockPos pBlockPos) {
         handler.extractItem(0, 1, false);
         pLevel.playSound(null, pBlockPos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS);
@@ -73,6 +109,18 @@ public class PigBlockEntity extends BlockEntity {
         foodPoints += 5;
         if (foodPoints > maxFoodPoints)
             foodPoints = maxFoodPoints;
+    }
+
+    public void addHarvester(BlockPos pBlockPos) {
+        if(connectedHarvesters.contains(pBlockPos)) return;
+
+        connectedHarvesters.add(pBlockPos);
+        setChanged();
+    }
+
+    public void removeHarvester(BlockPos pBlockPos) {
+        connectedHarvesters.remove(pBlockPos);
+        setChanged();
     }
 
     private BlockEntity getNorthFacingBlock(Level level, BlockState blockState) {
@@ -93,6 +141,18 @@ public class PigBlockEntity extends BlockEntity {
         pTag.putInt("pig_block.food_points", foodPoints);
         pTag.putInt("pig_block.max_food_points", maxFoodPoints);
 
+        ListTag harvesterList = new ListTag();
+
+        for(BlockPos pos : connectedHarvesters) {
+            CompoundTag posTag = new CompoundTag();
+            posTag.putInt("x", pos.getX());
+            posTag.putInt("y", pos.getY());
+            posTag.putInt("z", pos.getZ());
+            harvesterList.add(posTag);
+        }
+
+        pTag.put("Harvesters", harvesterList);
+
         super.saveAdditional(pTag, pRegistries);
     }
 
@@ -103,6 +163,22 @@ public class PigBlockEntity extends BlockEntity {
         eatingProgress =  pTag.getInt("pig_block.eating_progress");
         foodPoints = pTag.getInt("pig_block.food_points");
         maxFoodPoints = pTag.getInt("pig_block.max_food_points");
+
+        connectedHarvesters.clear();
+
+        ListTag harvesterList = pTag.getList("Harvesters", Tag.TAG_COMPOUND);
+
+        for (int i = 0; i < harvesterList.size(); i++) {
+            CompoundTag posTag = harvesterList.getCompound(i);
+
+            BlockPos pos = new BlockPos(
+                    posTag.getInt("x"),
+                    posTag.getInt("y"),
+                    posTag.getInt("z")
+            );
+
+            connectedHarvesters.add(pos);
+        }
     }
 
     @Override
