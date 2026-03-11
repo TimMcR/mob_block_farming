@@ -1,7 +1,7 @@
 package net.Rampage.mob_block_farming.block.custom;
 
 import net.Rampage.mob_block_farming.block.entity.custom.AbstractHarvesterBlockEntity;
-import net.Rampage.mob_block_farming.util.HarvesterConnector;
+import net.Rampage.mob_block_farming.block.entity.custom.PigBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -11,18 +11,29 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractHarvesterBlock extends BaseEntityBlock {
+public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEntity> extends BaseEntityBlock {
+    private RegistryObject<BlockEntityType<T>> blockEntityTypeRegistryObject;
+    private @Nullable PigBlockEntity mobBlockEntity;
+
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public AbstractHarvesterBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.SOUTH));
+    }
+
+    protected AbstractHarvesterBlock(Properties pProperties, RegistryObject<BlockEntityType<T>> blockEntityTypeRegistryObject) {
+        this(pProperties);
+        this.blockEntityTypeRegistryObject = blockEntityTypeRegistryObject;
     }
 
     @Override
@@ -55,10 +66,7 @@ public abstract class AbstractHarvesterBlock extends BaseEntityBlock {
                 pLevel.updateNeighbourForOutputSignal(pPos, this);
             }
 
-            if (!pLevel.isClientSide) {
-                HarvesterConnector.disconnect(pLevel, pPos, pState);
-            }
-
+            mobBlockEntity = null;
             super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         }
     }
@@ -67,7 +75,7 @@ public abstract class AbstractHarvesterBlock extends BaseEntityBlock {
     protected void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         if(pLevel.isClientSide) return;
 
-        HarvesterConnector.tryConnect(pLevel, pPos, pState);
+        tryConnect(pLevel, pPos, pState);
 
         super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
     }
@@ -76,6 +84,31 @@ public abstract class AbstractHarvesterBlock extends BaseEntityBlock {
     protected void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if(pLevel.isClientSide) return;
 
-        HarvesterConnector.tryConnect(pLevel, pPos, pState);
+        tryConnect(pLevel, pPos, pState);
+    }
+
+    private void tryConnect(Level level, BlockPos pos, BlockState state) {
+        if (!state.hasProperty(AbstractHarvesterBlock.FACING)) {
+            return;
+        }
+
+        Direction facing = state.getValue(AbstractHarvesterBlock.FACING);
+
+        BlockPos neighbor = pos.relative(facing);
+        BlockEntity be = level.getBlockEntity(neighbor);
+
+        if (be instanceof PigBlockEntity controller) {
+            mobBlockEntity = controller;
+        }
+    }
+
+    @Nullable
+    @Override
+    public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level pLevel, BlockState pState, BlockEntityType<B> pBlockEntityType) {
+        if(pLevel.isClientSide())
+            return null;
+
+        return createTickerHelper(pBlockEntityType, blockEntityTypeRegistryObject.get(),
+                (level, blockPos, blockState, harvesterBlockEntity) -> harvesterBlockEntity.tick(level, blockPos, blockState, mobBlockEntity));
     }
 }

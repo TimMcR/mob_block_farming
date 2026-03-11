@@ -3,7 +3,6 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 import net.Rampage.mob_block_farming.recipe.HarvesterRecipe;
 import net.Rampage.mob_block_farming.recipe.HarvesterRecipeInput;
 import net.Rampage.mob_block_farming.recipe.ModRecipes;
-import net.Rampage.mob_block_farming.util.IHarvester;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -16,6 +15,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class AbstractHarvesterBlockEntity extends BlockEntity implements MenuProvider, IHarvester {
+public abstract class AbstractHarvesterBlockEntity extends BlockEntity implements MenuProvider{
     public AbstractHarvesterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
     }
@@ -54,8 +54,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
     public void resetProgress() {
         progressTimer = 0;
     }
-
-
+    
     @Override
     public void onLoad() {
         super.onLoad();
@@ -122,23 +121,56 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
 
     public abstract int getFoodPointCost();
     public abstract String getHarvesterType();
-    protected abstract ItemStack getOutputItemStack(String mobBlockType);
-    public boolean acceptHarvesterOutput(String mobBlockType) {
 
+    private boolean canRunHarvester(@Nullable PigBlockEntity mobBlock) {
+        if (mobBlock == null) return false;
 
-        progressTimer += speedMultiplier;
+        int cost = getFoodPointCost();
 
-        if (progressTimer < BASE_TICK_INTERVAL) {
+        if (mobBlock.getFoodPoints() < cost)
             return false;
+
+        Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
+        if(recipe.isEmpty())
+            return false;
+
+        ItemStack output = recipe.get().value().result();
+        return canInsertItemIntoOutputSlot(output);
+    }
+
+    private boolean canInsertItemIntoOutputSlot(ItemStack output) {
+        ItemStack remainder = ItemHandlerHelper.insertItemStacked(itemHandler, output, true);
+
+        return remainder.getCount() == 0;
+    }
+
+    public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState,
+                     @Nullable PigBlockEntity mobBlock) {
+        if (!canRunHarvester(mobBlock)) {
+            resetProgress();
+            return;
         }
 
-        progressTimer = 0;
+        progressTimer += speedMultiplier;
+        setChanged(pLevel, pBlockPos, pBlockState);
 
-        ItemStack stackToInsert = getOutputItemStack(mobBlockType);
+        if (progressTimer >= BASE_TICK_INTERVAL) {
+            harvestOutput(mobBlock);
+            resetProgress();
+        }
+    }
 
-        ItemStack remainder = ItemHandlerHelper.insertItemStacked(itemHandler, stackToInsert, false);
-        setChanged();
+    private void harvestOutput(PigBlockEntity mobBlock) {
+        int cost = getFoodPointCost();
 
-        return remainder.getCount() != stackToInsert.getCount();
+        boolean hasSubtracted = mobBlock.subtractFoodPoints(cost);
+
+        if (!hasSubtracted)
+            return;
+
+        Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
+        ItemStack output = recipe.get().value().result();
+
+        ItemHandlerHelper.insertItemStacked(itemHandler, output, false);
     }
 }

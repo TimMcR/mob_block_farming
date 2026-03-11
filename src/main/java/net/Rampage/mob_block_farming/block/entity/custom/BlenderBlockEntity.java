@@ -163,7 +163,7 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
         increaseCraftingProgress();
         setChanged(level, blockPos, blockState);
 
-        if (hasCraftingFinished()) {
+        if (progress >= maxProgress) {
             craftItem();
             resetProgress();
         }
@@ -195,10 +195,6 @@ public class BlenderBlockEntity extends BlockEntity implements MenuProvider {
         itemHandler.extractItem(INPUT_SLOT, 1, false);
         itemHandler.setStackInSlot(OUTPUT_SLOT, new ItemStack(output.getItem(),
                 itemHandler.getStackInSlot(OUTPUT_SLOT).getCount() + output.getCount()));
-    }
-
-    private boolean hasCraftingFinished() {
-        return this.progress >= this.maxProgress;
     }
 
     private void increaseCraftingProgress() {
