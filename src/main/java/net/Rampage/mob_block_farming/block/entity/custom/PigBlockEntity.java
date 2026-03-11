@@ -31,7 +31,9 @@ public class PigBlockEntity extends BlockEntity {
     private int foodPoints = 0;
     private int maxFoodPoints = 60;
     private int eatingProgress = 0;
-    private static final int TICK_INTERVAL = 60;
+
+    private int speedMultiplier = 1;
+    private static final int BASE_TICK_INTERVAL = 60;
 
     private final Set<BlockPos> connectedHarvesters = new HashSet<>();
 
@@ -45,6 +47,9 @@ public class PigBlockEntity extends BlockEntity {
         if (foodPoints > 0) {
             outputToConnectedHarvesters(pLevel);
         }
+        else {
+            resetConnectedHarvesters(pLevel);
+        }
 
         if (foodPoints < maxFoodPoints && northBlock instanceof TroughBlockEntity trough) {
             LazyOptional<IItemHandler> capability = trough.getCapability(ForgeCapabilities.ITEM_HANDLER);
@@ -53,10 +58,10 @@ public class PigBlockEntity extends BlockEntity {
                 ItemStack stack = handler.getStackInSlot(0);
 
                 if (stack.is(ModItems.VEGAN_SLURRY.get())) {
-                    eatingProgress++;
+                    eatingProgress += speedMultiplier;
                     setChanged(pLevel, pBlockPos, pBlockState);
 
-                    if (eatingProgress == TICK_INTERVAL) {
+                    if (eatingProgress == BASE_TICK_INTERVAL) {
                         consumeFood(handler, pLevel, pBlockPos);
                     }
                     else if (eatingProgress % 10 == 0) {
@@ -73,7 +78,28 @@ public class PigBlockEntity extends BlockEntity {
         }
     }
 
+    private void resetConnectedHarvesters(Level pLevel) {
+        List<IHarvester> harvesters = getConnectedHarvesters(pLevel);
+
+        for (IHarvester harvester : harvesters) {
+            harvester.resetProgress();
+        }
+    }
+
     private void outputToConnectedHarvesters(Level pLevel) {
+        List<IHarvester> harvesters = getConnectedHarvesters(pLevel);
+
+        // Sort by highest food point cost
+        harvesters.sort(Comparator.comparingInt(IHarvester::getFoodPointCost).reversed());
+
+        for (IHarvester harvester : harvesters) {
+            produceHarvesterOutput(harvester);
+            if(foodPoints == 0)
+                break;
+        }
+    }
+
+    private List<IHarvester> getConnectedHarvesters(Level pLevel) {
         Iterator<BlockPos> iterator = connectedHarvesters.iterator();
 
         List<IHarvester> harvesters = new ArrayList<>();
@@ -99,14 +125,7 @@ public class PigBlockEntity extends BlockEntity {
             setChanged();
         }
 
-        // Sort by highest food point cost
-        harvesters.sort(Comparator.comparingInt(IHarvester::getFoodPointCost).reversed());
-
-        for (IHarvester harvester : harvesters) {
-            produceHarvesterOutput(harvester);
-            if(foodPoints == 0)
-                break;
-        }
+        return harvesters;
     }
 
     private void produceHarvesterOutput(IHarvester harvester) {

@@ -42,6 +42,10 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
         }
     };
 
+    private int progressTimer = 0;
+    private int speedMultiplier = 1;
+
+    private static final int BASE_TICK_INTERVAL = 60;
     private static final int[] OUTPUT_SLOTS = {0, 1, 2, 3};
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -105,6 +109,8 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
 
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        pTag.putInt("meat_harvester_block.progress", progressTimer);
+
         pTag.put("inventory", itemHandler.serializeNBT(pRegistries));
 
         super.saveAdditional(pTag, pRegistries);
@@ -115,6 +121,8 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
         super.loadAdditional(pTag, pRegistries);
 
         itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
+
+        progressTimer = pTag.getInt("meat_harvester_block.progress");
     }
 
     @Override
@@ -134,12 +142,25 @@ public class MeatHarvesterBlockEntity extends BlockEntity implements MenuProvide
     }
 
     @Override
+    public void resetProgress() {
+        progressTimer = 0;
+    }
+
+    @Override
     public int getFoodPointCost() {
         return 3;
     }
 
     @Override
     public boolean acceptHarvesterOutput(MobBlockType mobBlockType) {
+        progressTimer += speedMultiplier;
+
+        if (progressTimer < BASE_TICK_INTERVAL) {
+            return false;
+        }
+
+        progressTimer = 0;
+
         ItemStack stackToInsert = switch(mobBlockType) {
             case PIG -> new ItemStack(Items.PORKCHOP, 1);
         };
