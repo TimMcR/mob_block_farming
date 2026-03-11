@@ -116,22 +116,19 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
     private Optional<RecipeHolder<HarvesterRecipe>> getCurrentRecipe(String mobBlockType) {
         return this.level.getRecipeManager()
                 .getRecipeFor(ModRecipes.HARVESTER_TYPE.get(),
-                        new HarvesterRecipeInput(mobBlockType, getHarvesterType(), getFoodPointCost()), level);
+                        new HarvesterRecipeInput(mobBlockType, getHarvesterType()), level);
     }
 
-    public abstract int getFoodPointCost();
     public abstract String getHarvesterType();
 
     private boolean canRunHarvester(@Nullable PigBlockEntity mobBlock) {
         if (mobBlock == null) return false;
 
-        int cost = getFoodPointCost();
-
-        if (mobBlock.getFoodPoints() < cost)
-            return false;
-
         Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
         if(recipe.isEmpty())
+            return false;
+
+        if (mobBlock.getFoodPoints() < recipe.get().value().foodCost())
             return false;
 
         ItemStack output = recipe.get().value().result();
@@ -161,15 +158,13 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
     }
 
     private void harvestOutput(PigBlockEntity mobBlock) {
-        int cost = getFoodPointCost();
+        Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
+        ItemStack output = recipe.get().value().result();
 
-        boolean hasSubtracted = mobBlock.subtractFoodPoints(cost);
+        boolean hasSubtracted = mobBlock.subtractFoodPoints(recipe.get().value().foodCost());
 
         if (!hasSubtracted)
             return;
-
-        Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
-        ItemStack output = recipe.get().value().result();
 
         ItemHandlerHelper.insertItemStacked(itemHandler, output, false);
     }

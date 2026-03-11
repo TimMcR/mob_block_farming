@@ -20,8 +20,7 @@ public record HarvesterRecipe(String mobType, String harvesterType, int foodCost
         }
 
         return  Objects.equals(pInput.mobType(), mobType) &&
-                Objects.equals(pInput.harvesterType(), harvesterType) &&
-                pInput.foodCost() == foodCost;
+                Objects.equals(pInput.harvesterType(), harvesterType);
     }
 
     @Override

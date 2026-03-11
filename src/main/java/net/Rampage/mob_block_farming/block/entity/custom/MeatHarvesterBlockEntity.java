@@ -46,11 +46,6 @@ public class MeatHarvesterBlockEntity extends AbstractHarvesterBlockEntity {
     }
 
     @Override
-    public int getFoodPointCost() {
-        return 4;
-    }
-
-    @Override
     public String getHarvesterType() {
         return "meat";
     }
