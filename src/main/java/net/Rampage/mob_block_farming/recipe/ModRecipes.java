@@ -27,7 +27,12 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<HarvesterRecipe>> HARVESTER_SERIALIZER =
             SERIALIZERS.register("harvesting", HarvesterRecipe.Serializer::new);
     public static final RegistryObject<RecipeType<HarvesterRecipe>> HARVESTER_TYPE =
-            TYPES.register("harvesting", () -> new RecipeType<HarvesterRecipe>() {});
+            TYPES.register("harvesting", () -> new RecipeType<>() {
+                @Override
+                public String toString() {
+                    return "harvesting";
+                }
+            });
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);

@@ -4,7 +4,7 @@
   "harvester_type": "meat",
   "food_cost": 20,
   "result": {
-    "item": "minecraft:porkchop",
+    "id": "minecraft:porkchop",
     "count": 1
   }
 }
