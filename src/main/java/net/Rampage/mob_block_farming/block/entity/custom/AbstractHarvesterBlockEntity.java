@@ -1,7 +1,9 @@
 package net.Rampage.mob_block_farming.block.entity.custom;
 
+import net.Rampage.mob_block_farming.recipe.HarvesterRecipe;
+import net.Rampage.mob_block_farming.recipe.HarvesterRecipeInput;
+import net.Rampage.mob_block_farming.recipe.ModRecipes;
 import net.Rampage.mob_block_farming.util.IHarvester;
-import net.Rampage.mob_block_farming.util.MobBlockType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -13,6 +15,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +26,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public abstract class AbstractHarvesterBlockEntity extends BlockEntity implements MenuProvider, IHarvester {
     public AbstractHarvesterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
@@ -109,9 +114,18 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
         progressTimer = pTag.getInt("harvester_block.progress");
     }
 
+    private Optional<RecipeHolder<HarvesterRecipe>> getCurrentRecipe(String mobBlockType) {
+        return this.level.getRecipeManager()
+                .getRecipeFor(ModRecipes.HARVESTER_TYPE.get(),
+                        new HarvesterRecipeInput(mobBlockType, getHarvesterType(), getFoodPointCost()), level);
+    }
+
     public abstract int getFoodPointCost();
-    protected abstract ItemStack getOutputItemStack(MobBlockType mobBlockType);
-    public boolean acceptHarvesterOutput(MobBlockType mobBlockType) {
+    public abstract String getHarvesterType();
+    protected abstract ItemStack getOutputItemStack(String mobBlockType);
+    public boolean acceptHarvesterOutput(String mobBlockType) {
+
+
         progressTimer += speedMultiplier;
 
         if (progressTimer < BASE_TICK_INTERVAL) {

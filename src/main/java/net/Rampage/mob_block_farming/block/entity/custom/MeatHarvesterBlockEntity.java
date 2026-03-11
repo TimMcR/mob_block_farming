@@ -2,7 +2,6 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.screen.custom.MeatHarvesterMenu;
-import net.Rampage.mob_block_farming.util.MobBlockType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -54,9 +53,16 @@ public class MeatHarvesterBlockEntity extends AbstractHarvesterBlockEntity {
     }
 
     @Override
-    protected ItemStack getOutputItemStack(MobBlockType mobBlockType) {
+    public String getHarvesterType() {
+        return "meat";
+    }
+
+    // TODO - update this
+    @Override
+    protected ItemStack getOutputItemStack(String mobBlockType) {
         return switch(mobBlockType) {
-            case PIG -> new ItemStack(Items.PORKCHOP, 1);
+            case "PIG" -> new ItemStack(Items.PORKCHOP, 1);
+            default -> null;
         };
     }
 }

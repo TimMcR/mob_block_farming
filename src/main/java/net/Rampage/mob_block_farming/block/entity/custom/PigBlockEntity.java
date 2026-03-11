@@ -3,7 +3,6 @@ package net.Rampage.mob_block_farming.block.entity.custom;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.item.ModItems;
 import net.Rampage.mob_block_farming.util.IHarvester;
-import net.Rampage.mob_block_farming.util.MobBlockType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -134,7 +133,7 @@ public class PigBlockEntity extends BlockEntity {
         if (foodPoints < cost)
             return;
 
-        var canAccept = harvester.acceptHarvesterOutput(MobBlockType.PIG);
+        var canAccept = harvester.acceptHarvesterOutput("PIG");
         if (!canAccept)
             return;
 
