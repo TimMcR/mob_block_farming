@@ -21,8 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEntity> extends BaseEntityBlock {
     private RegistryObject<BlockEntityType<T>> blockEntityTypeRegistryObject;
-    // TODO - store position in NBT on entity block
-    private @Nullable PigBlockEntity mobBlockEntity;
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
@@ -67,7 +65,6 @@ public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEnt
                 pLevel.updateNeighbourForOutputSignal(pPos, this);
             }
 
-            mobBlockEntity = null;
             super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         }
     }
@@ -98,8 +95,9 @@ public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEnt
         BlockPos neighbor = pos.relative(facing);
         BlockEntity be = level.getBlockEntity(neighbor);
 
-        if (be instanceof PigBlockEntity controller) {
-            mobBlockEntity = controller;
+        if (be instanceof PigBlockEntity mobBlock &&
+                level.getBlockEntity(pos) instanceof AbstractHarvesterBlockEntity harvesterBlockEntity) {
+            harvesterBlockEntity.connectToMobBlock(mobBlock);
         }
     }
 
@@ -110,6 +108,6 @@ public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEnt
             return null;
 
         return createTickerHelper(pBlockEntityType, blockEntityTypeRegistryObject.get(),
-                (level, blockPos, blockState, harvesterBlockEntity) -> harvesterBlockEntity.tick(level, blockPos, blockState, mobBlockEntity));
+                (level, blockPos, blockState, harvesterBlockEntity) -> harvesterBlockEntity.tick(level, blockPos, blockState));
     }
 }

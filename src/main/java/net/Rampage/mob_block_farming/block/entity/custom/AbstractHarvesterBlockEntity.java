@@ -30,6 +30,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public abstract class AbstractHarvesterBlockEntity extends BlockEntity implements MenuProvider{
+    private BlockPos mobBlockPos;
+
     public AbstractHarvesterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
     }
@@ -101,6 +103,10 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
 
         pTag.put("inventory", itemHandler.serializeNBT(pRegistries));
 
+        if(mobBlockPos != null) {
+            pTag.putLong("mob_block", mobBlockPos.asLong());
+        }
+
         super.saveAdditional(pTag, pRegistries);
     }
 
@@ -111,6 +117,10 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
         itemHandler.deserializeNBT(pRegistries, pTag.getCompound("inventory"));
 
         progressTimer = pTag.getInt("harvester_block.progress");
+
+        if(pTag.contains("mob_block")) {
+            mobBlockPos = BlockPos.of(pTag.getLong("mob_block"));
+        }
     }
 
     private Optional<RecipeHolder<HarvesterRecipe>> getCurrentRecipe(String mobBlockType) {
@@ -141,19 +151,30 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
         return remainder.getCount() == 0;
     }
 
-    public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState,
-                     @Nullable PigBlockEntity mobBlock) {
-        if (!canRunHarvester(mobBlock)) {
+    public void tick(Level pLevel, BlockPos pBlockPos, BlockState pBlockState) {
+        if (mobBlockPos == null) {
             resetProgress();
             return;
         }
 
-        progressTimer += speedMultiplier;
-        setChanged(pLevel, pBlockPos, pBlockState);
+        BlockEntity beFront = pLevel.getBlockEntity(mobBlockPos);
 
-        if (progressTimer >= BASE_TICK_INTERVAL) {
-            harvestOutput(mobBlock);
-            resetProgress();
+        if (beFront instanceof PigBlockEntity mobBlock) {
+            if (!canRunHarvester(mobBlock)) {
+                resetProgress();
+                return;
+            }
+
+            progressTimer += speedMultiplier;
+            setChanged(pLevel, pBlockPos, pBlockState);
+
+            if (progressTimer >= BASE_TICK_INTERVAL) {
+                harvestOutput(mobBlock);
+                resetProgress();
+            }
+        }
+        else {
+            mobBlockPos = null;
         }
     }
 
@@ -167,5 +188,9 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
             return;
 
         ItemHandlerHelper.insertItemStacked(itemHandler, output, false);
+    }
+
+    public void connectToMobBlock(PigBlockEntity mobBlock) {
+        mobBlockPos = mobBlock.getBlockPos();
     }
 }
