@@ -11,6 +11,11 @@ public record HarvesterRecipeInput(String mobType, String harvesterType) impleme
 
     @Override
     public int size() {
-        return 3;
+        return 2;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return mobType.isEmpty() || harvesterType.isEmpty();
     }
 }
