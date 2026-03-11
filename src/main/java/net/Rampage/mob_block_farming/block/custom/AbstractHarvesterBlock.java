@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEntity> extends BaseEntityBlock {
     private RegistryObject<BlockEntityType<T>> blockEntityTypeRegistryObject;
+    // TODO - store position in NBT on entity block
     private @Nullable PigBlockEntity mobBlockEntity;
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;

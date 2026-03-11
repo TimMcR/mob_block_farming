@@ -89,7 +89,7 @@ public class PigBlockEntity extends BlockEntity {
         pLevel.playSound(null, pBlockPos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS);
         resetEatingProgress();
 
-        foodPoints += 5;
+        foodPoints += 20;
         if (foodPoints > maxFoodPoints)
             foodPoints = maxFoodPoints;
     }

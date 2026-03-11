@@ -131,7 +131,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
         if (mobBlock.getFoodPoints() < recipe.get().value().foodCost())
             return false;
 
-        ItemStack output = recipe.get().value().result();
+        ItemStack output = recipe.get().value().result().copy();
         return canInsertItemIntoOutputSlot(output);
     }
 
@@ -159,7 +159,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
 
     private void harvestOutput(PigBlockEntity mobBlock) {
         Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
-        ItemStack output = recipe.get().value().result();
+        ItemStack output = recipe.get().value().result().copy();
 
         boolean hasSubtracted = mobBlock.subtractFoodPoints(recipe.get().value().foodCost());
 
