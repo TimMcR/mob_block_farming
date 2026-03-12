@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class AbstractHarvesterBlockEntity extends BlockEntity implements MenuProvider{
+public abstract class AbstractHarvesterBlockEntity extends BlockEntity implements MenuProvider {
     private BlockPos mobBlockPos;
 
     public AbstractHarvesterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
@@ -131,7 +131,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
 
     public abstract String getHarvesterType();
 
-    private boolean canRunHarvester(@Nullable PigBlockEntity mobBlock) {
+    private boolean canRunHarvester(@Nullable AbstractMobBlockEntity mobBlock) {
         if (mobBlock == null) return false;
 
         Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
@@ -159,7 +159,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
 
         BlockEntity beFront = pLevel.getBlockEntity(mobBlockPos);
 
-        if (beFront instanceof PigBlockEntity mobBlock) {
+        if (beFront instanceof AbstractMobBlockEntity mobBlock) {
             if (!canRunHarvester(mobBlock)) {
                 resetProgress();
                 return;
@@ -178,7 +178,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
         }
     }
 
-    private void harvestOutput(PigBlockEntity mobBlock) {
+    private void harvestOutput(AbstractMobBlockEntity mobBlock) {
         Optional<RecipeHolder<HarvesterRecipe>> recipe = getCurrentRecipe(mobBlock.getMobBlockType());
         ItemStack output = recipe.get().value().result().copy();
 
@@ -190,7 +190,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
         ItemHandlerHelper.insertItemStacked(itemHandler, output, false);
     }
 
-    public void connectToMobBlock(PigBlockEntity mobBlock) {
+    public void connectToMobBlock(AbstractMobBlockEntity mobBlock) {
         resetProgress();
         mobBlockPos = mobBlock.getBlockPos();
     }

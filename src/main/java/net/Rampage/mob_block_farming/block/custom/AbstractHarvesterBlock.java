@@ -1,7 +1,7 @@
 package net.Rampage.mob_block_farming.block.custom;
 
 import net.Rampage.mob_block_farming.block.entity.custom.AbstractHarvesterBlockEntity;
-import net.Rampage.mob_block_farming.block.entity.custom.PigBlockEntity;
+import net.Rampage.mob_block_farming.block.entity.custom.AbstractMobBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -40,10 +40,7 @@ public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEnt
         return RenderShape.MODEL;
     }
 
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return null;
-    }
+    public abstract BlockEntity newBlockEntity(BlockPos pPos, BlockState pState);
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -95,7 +92,7 @@ public abstract class AbstractHarvesterBlock<T extends AbstractHarvesterBlockEnt
         BlockPos neighbor = pos.relative(facing);
         BlockEntity be = level.getBlockEntity(neighbor);
 
-        if (be instanceof PigBlockEntity mobBlock &&
+        if (be instanceof AbstractMobBlockEntity mobBlock &&
                 level.getBlockEntity(pos) instanceof AbstractHarvesterBlockEntity harvesterBlockEntity) {
             harvesterBlockEntity.connectToMobBlock(mobBlock);
         }

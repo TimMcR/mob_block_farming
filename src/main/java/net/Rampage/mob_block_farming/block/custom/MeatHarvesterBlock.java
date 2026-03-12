@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.Rampage.mob_block_farming.block.entity.ModBlockEntities;
 import net.Rampage.mob_block_farming.block.entity.custom.MeatHarvesterBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
