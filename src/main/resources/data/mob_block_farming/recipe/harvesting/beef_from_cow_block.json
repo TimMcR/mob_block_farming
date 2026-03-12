@@ -1,0 +1,10 @@
+{
+  "type": "mob_block_farming:harvesting",
+  "mob_type": "cow",
+  "harvester_type": "meat",
+  "food_cost": 20,
+  "result": {
+    "id": "minecraft:beef",
+    "count": 1
+  }
+}
