@@ -1,0 +1,10 @@
+{
+  "type": "mob_block_farming:harvesting",
+  "mob_type": "pig",
+  "harvester_type": "meat",
+  "food_cost": 20,
+  "result": {
+    "id": "minecraft:porkchop",
+    "count": 1
+  }
+}
