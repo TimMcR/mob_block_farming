@@ -18,7 +18,8 @@ import java.util.Objects;
 public record HarvesterRecipe(String mobType, String harvesterType, int foodCost, ItemStack result) implements Recipe<HarvesterRecipeInput> {
     @Override
     public boolean matches(HarvesterRecipeInput pInput, Level pLevel) {
-        return true;
+        return Objects.equals(pInput.mobType(), mobType) &&
+                Objects.equals(pInput.harvesterType(), harvesterType);
     }
 
     @Override
