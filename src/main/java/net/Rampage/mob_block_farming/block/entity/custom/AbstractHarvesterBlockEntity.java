@@ -191,6 +191,7 @@ public abstract class AbstractHarvesterBlockEntity extends BlockEntity implement
     }
 
     public void connectToMobBlock(PigBlockEntity mobBlock) {
+        resetProgress();
         mobBlockPos = mobBlock.getBlockPos();
     }
 }
